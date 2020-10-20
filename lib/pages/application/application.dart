@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:structure_flutter/core/resource/app_localizations.dart';
-import 'package:structure_flutter/pages/listuser/list_user_page.dart';
+import '../../core/resource/app_localizations.dart';
 
 // ignore: must_be_immutable
 class Application extends StatelessWidget {
@@ -30,7 +29,7 @@ class Application extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: ListUserPage(),
+      // home: ListUserPage(),
     );
   }
 }

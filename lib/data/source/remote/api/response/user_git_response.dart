@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:structure_flutter/data/entities/user.dart';
-
+import '../../../../../data/entities/user.dart';
 part 'parser/user_git_response.g.dart';
 
 @JsonSerializable()

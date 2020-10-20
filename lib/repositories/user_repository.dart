@@ -1,7 +1,7 @@
 
 import 'package:injectable/injectable.dart';
-import 'package:structure_flutter/data/entities/user.dart';
-import 'package:structure_flutter/data/source/remote/user_remote_datasource.dart';
+import '../data/entities/user.dart';
+import '../data/source/remote/user_remote_datasource.dart';
 
 import '../data/entities/user.dart';
 

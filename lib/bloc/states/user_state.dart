@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:structure_flutter/data/entities/user.dart';
+import '../../data/entities/user.dart';
 
+//Sample code
 abstract class UserGitState extends Equatable {
   UserGitState([List props = const []]) : super(props);
 }

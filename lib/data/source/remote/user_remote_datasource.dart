@@ -1,10 +1,9 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:structure_flutter/data/entities/user.dart';
-import 'package:structure_flutter/data/source/remote/api/response/user_git_response.dart';
-import 'package:structure_flutter/data/source/remote/service/dio_client.dart';
+import '../../../data/entities/user.dart';
+import '../../../data/source/remote/api/response/user_git_response.dart';
+import '../../../data/source/remote/service/dio_client.dart';
 
 abstract class UserRemoteDataSource {
   Future<List<UserGitEntity>> getUser(int page);
