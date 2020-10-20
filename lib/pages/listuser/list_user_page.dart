@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/blocs/user_bloc.dart';
 import 'package:structure_flutter/bloc/events/user_event.dart';
 import 'package:structure_flutter/bloc/states/user_state.dart';
+import 'package:structure_flutter/core/common/constants/size_constant.dart';
 import 'package:structure_flutter/core/resource/app_localizations.dart';
 import 'package:structure_flutter/di/injection.dart';
 
@@ -49,9 +50,7 @@ class ListUserPageState extends State<ListUserPage> {
             Center(
               child: Text(
                 AppLocalization.of(context).translate('list_user'),
-                style: TextStyle(
-                  fontSize: 30
-                ),
+                style: TextStyle(fontSize: 30),
               ),
             ),
             Expanded(
@@ -88,7 +87,7 @@ class ListUserPageState extends State<ListUserPage> {
   }
 
   _buildListView(UserGitLoaded state) {
-    var size = MediaQuery.of(context).size;
+    SizeConstant().init(context);
     return ListView.builder(
       controller: _scrollController,
       itemBuilder: (BuildContext context, int index) {
@@ -103,8 +102,8 @@ class ListUserPageState extends State<ListUserPage> {
                     Padding(
                       padding: EdgeInsets.only(left: 16),
                       child: SizedBox(
-                        width: size.width * 0.2,
-                        height: size.height * 0.1,
+                        width: SizeConstant.screenHeight * 0.2,
+                        height: SizeConstant.screenWidth * 0.1,
                         child: Stack(
                           children: [
                             Center(

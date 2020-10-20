@@ -4,12 +4,12 @@ import 'package:rxdart/rxdart.dart';
 import 'package:structure_flutter/bloc/events/user_event.dart';
 import 'package:structure_flutter/bloc/states/user_state.dart';
 import 'package:structure_flutter/data/entities/user.dart';
-import 'package:structure_flutter/data/source/remote/user_remote_datasource.dart';
 import 'package:structure_flutter/di/injection.dart';
+import 'package:structure_flutter/repositories/user_repository.dart';
 
 @singleton
 class UserGitBloc extends Bloc<UserGitEvent, UserGitState> {
-  final UserRemoteDataSource _userRepository = getIt<UserRemoteDataSource>();
+  final UserRepository _userRepository = getIt<UserRepositoryImpl>();
 
   UserGitBloc();
 

@@ -1,10 +1,5 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of '../user_git_response.dart';
-
-// **************************************************************************
-// JsonSerializableGenerator
-// **************************************************************************
 
 UserGitResponse _$UserGitResponseFromJson(Map<String, dynamic> json) {
   return UserGitResponse(

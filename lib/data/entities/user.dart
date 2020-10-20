@@ -11,6 +11,7 @@ class UserGitEntity extends Equatable {
   @JsonKey(name: "avatar_url")
   final String avatar;
 
+
   UserGitEntity({this.id, this.name, this.avatar});
 
   factory UserGitEntity.fromJson(Map<String, dynamic> json) =>

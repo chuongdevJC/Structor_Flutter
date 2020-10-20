@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:structure_flutter/core/resource/app_localizations.dart';
 import 'package:structure_flutter/pages/listuser/list_user_page.dart';
+import 'package:structure_flutter/pages/listuser/list_user_page.dart';
 
 // ignore: must_be_immutable
 class Application extends StatelessWidget {
