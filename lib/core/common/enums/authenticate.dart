@@ -1,3 +1,4 @@
+
 enum AuthStatus {
   NotAuthenticated,
   Authenticating,

@@ -42,14 +42,14 @@ class AuthProvider extends ChangeNotifier {
       user = _userCredential.user;
       status = AuthStatus.Authenticated;
 
-      SnackBarService.instance.showSnackBarSuccess("Welcome, ${user.email}");
+      SnackBarWidget.instance.showSnackBarSuccess("Welcome, ${user.email}");
       await AccountRepositoryImpl.instance.updateUserLastSeenTime(user.uid);
       NavigationExtension.instance.navigateToReplacement("home");
     } catch (e) {
       status = AuthStatus.Error;
       user = null;
       print("Error Authenticating");
-      SnackBarService.instance.showSnackBarError("Error Authenticating");
+      SnackBarWidget.instance.showSnackBarError("Error Authenticating");
     }
     notifyListeners();
   }
@@ -67,14 +67,14 @@ class AuthProvider extends ChangeNotifier {
 
       status = AuthStatus.Authenticated;
       await onSuccess(user.uid);
-      SnackBarService.instance.showSnackBarSuccess("Welcome, ${user.email}");
+      SnackBarWidget.instance.showSnackBarSuccess("Welcome, ${user.email}");
       await AccountRepositoryImpl.instance.updateUserLastSeenTime(user.uid);
       NavigationExtension.instance.goBack();
       NavigationExtension.instance.navigateToReplacement("home");
     } catch (e) {
       status = AuthStatus.Error;
       user = null;
-      SnackBarService.instance.showSnackBarError("Error Registering User");
+      SnackBarWidget.instance.showSnackBarError("Error Registering User");
     }
     notifyListeners();
   }
@@ -86,9 +86,9 @@ class AuthProvider extends ChangeNotifier {
       status = AuthStatus.NotAuthenticated;
       await onSuccess();
       await NavigationExtension.instance.navigateToReplacement("login");
-      SnackBarService.instance.showSnackBarSuccess("Logged Out Successfully!");
+      SnackBarWidget.instance.showSnackBarSuccess("Logged Out Successfully!");
     } catch (e) {
-      SnackBarService.instance.showSnackBarError("Error Logging Out");
+      SnackBarWidget.instance.showSnackBarError("Error Logging Out");
     }
     notifyListeners();
   }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class SnackBarService {
+class SnackBarWidget{
+  SnackBarWidget() {}
+
   BuildContext _buildContext;
 
-  static SnackBarService instance = SnackBarService();
-
-  SnackBarService() {}
+  static SnackBarWidget instance = SnackBarWidget();
 
   set buildContext(BuildContext _context) {
     _buildContext = _context;

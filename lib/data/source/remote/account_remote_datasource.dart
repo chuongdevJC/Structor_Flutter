@@ -5,8 +5,6 @@ import 'package:structure_flutter/data/entities/conversation.dart';
 import 'package:structure_flutter/data/entities/message.dart';
 
 abstract class AccountRemoteDataSource {
-  // Future<List<UserGitEntity>> getUser(int page);
-
   Future<void> createUserInDB(String _uid, String _name, String _email, String _imageURL);
   Future<void> updateUserLastSeenTime(String _userID);
   Future<void> sendMessage(String _conversationID, Message _message);
@@ -29,18 +27,6 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
 
   String _userCollection = "Users";
   String _conversationsCollection = "Conversations";
-
-  //---------
-  // final DioClient _dioClient;
-  //
-  // AccountRemoteDataSourceImpl(this._dioClient);
-  //
-  // @override
-  // Future<List<UserGitEntity>> getUser(int page) async {
-  //   final response = await _dioClient.get('/search/users',
-  //       queryParameters: {'q': 'abc', 'page': page, 'per_page': 10});
-  //   return UserGitResponse.fromJson(response).userGits;
-  // }
 
   @override
   Future<void> createOrGetConversation(String _currentID, String _recepientID,

@@ -1,1 +1,6 @@
-enum JCEnvironment { DEV, STG, PRD }
+
+enum JCEnvironment {
+  DEV,
+  STG,
+  PRD
+}

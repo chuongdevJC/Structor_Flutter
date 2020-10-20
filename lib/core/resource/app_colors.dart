@@ -5,12 +5,14 @@ final blackColor = Colors.black;
 final whiteColor = Colors.white;
 final redColor = Colors.red;
 final black54 = Colors.black54;
-final greenColor  = Colors.green;
-final lightGreenAccentColor = Colors.lightGreenAccent;
+final black12_none = Colors.black12;
 
-final blueAccentColor = Colors.blueAccent;
-final lightBlueAccentColor = Colors.lightBlueAccent;
+final greenColor = Colors.green;
 final lightBlueColor = Colors.lightBlueAccent;
 
+final blueAccentColor = Colors.blueAccent;
 final blueNormalColor = Colors.blue;
-final black12_none = Colors.black12;
+
+final lightBlueAccentColor = Colors.lightBlueAccent;
+final lightGreenAccentColor = Colors.lightGreenAccent;
+

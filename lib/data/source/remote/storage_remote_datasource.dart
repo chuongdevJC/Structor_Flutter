@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
-import 'package:structure_flutter/data/entities/user.dart';
 import 'package:path/path.dart';
 abstract class StorageRemoteDataSource {
-  Future<List<UserGitEntity>> getUser(int page);
 
   Future<StorageTaskSnapshot> uploadUserImage(String _uid, File _image);
 
@@ -14,31 +11,14 @@ abstract class StorageRemoteDataSource {
 
 @Singleton(as: StorageRemoteDataSource)
 class StorageRemoteDataSourceImpl implements StorageRemoteDataSource {
-  // final DioClient _dioClient;
-  //
-  // StorageRemoteDataSourceImpl(this._dioClient);
-  //
-  // @override
-  // Future<List<UserGitEntity>> getUser(int page) async {
-  //   final response = await _dioClient.get('/search/users',
-  //       queryParameters: {'q': 'abc', 'page': page, 'per_page': 10});
-  //   return UserGitResponse.fromJson(response).userGits;
-  // }
-
-  @override
-  Future<List<UserGitEntity>> getUser(int page) {
-    // TODO: implement getUser
-    throw UnimplementedError();
-  }
-
-  static StorageRemoteDataSourceImpl instance = StorageRemoteDataSourceImpl();
-
   FirebaseStorage _storage;
   StorageReference _baseRef;
 
   String _profileImages = "profile_images";
   String _messages = "messages";
   String _images = "images";
+
+  static StorageRemoteDataSourceImpl instance = StorageRemoteDataSourceImpl();
 
   StorageRemoteDataSourceImpl() {
     _storage = FirebaseStorage.instance;
