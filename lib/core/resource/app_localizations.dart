@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -55,4 +54,5 @@ class _LocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
 
   @override
   bool shouldReload(LocalizationsDelegate<AppLocalization> old) => false;
+
 }

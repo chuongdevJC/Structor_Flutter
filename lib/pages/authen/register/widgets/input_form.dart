@@ -11,14 +11,13 @@ class InputForm extends StatefulWidget {
 }
 
 class _InputFormState extends State<InputForm> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
 
   AuthProvider _auth;
-
   GlobalKey<FormState> _formKey;
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   void initState() {
@@ -30,13 +29,14 @@ class _InputFormState extends State<InputForm> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     _auth = Provider.of<AuthProvider>(context);
-    SizeConstant().init(context);
+    SizeConstant.init(context);
     return Container(
       height: SizeConstant.screenHeight * 0.75,
       child: Form(
@@ -51,13 +51,13 @@ class _InputFormState extends State<InputForm> {
               alignment: Alignment.topLeft,
               child: Text(
                 'Email',
-                style: AppIcons.black38_16,
+                style: AppStyles.black38_16,
               ),
             ),
             TextFormField(
               controller: _emailController,
               validator: (_input) {
-                return _input.length != 0 && _input.contains("@")
+                return _input.isNotEmpty && _input.contains("@")
                     ? null
                     : "Please enter a valid email";
               },
@@ -80,7 +80,7 @@ class _InputFormState extends State<InputForm> {
               autocorrect: false,
               obscureText: true,
               validator: (_input) {
-                return _input.length != 0 ? null : "Please enter a password";
+                return _input.isNotEmpty ? null : "Please enter a password";
               },
               decoration: InputDecoration(
                 hintText: 'Enter your password',
@@ -93,7 +93,7 @@ class _InputFormState extends State<InputForm> {
               alignment: Alignment.topLeft,
               child: Text(
                 'Confirm Password',
-                style: AppIcons.black38_16,
+                style: AppStyles.black38_16,
               ),
             ),
             TextFormField(
@@ -101,7 +101,7 @@ class _InputFormState extends State<InputForm> {
               autocorrect: false,
               obscureText: true,
               validator: (_input) {
-                return _input.length != 0
+                return _input.isNotEmpty
                     ? null
                     : "Please enter a confirm password";
               },
@@ -135,12 +135,11 @@ class _InputFormState extends State<InputForm> {
                         _emailController.text.trim(),
                         _passwordController.text.trim(),
                         null);
-                    // print(_auth.userCredential);
                   }
                 },
                 child: Text(
                   'Sign Up',
-                  style: AppIcons.white_none,
+                  style: AppStyles.white_none,
                 ),
               ),
             ),
@@ -149,4 +148,5 @@ class _InputFormState extends State<InputForm> {
       ),
     );
   }
+
 }

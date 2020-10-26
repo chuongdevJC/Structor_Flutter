@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../core/utils/media_utils.dart';
 import '../../bloc/blocs/auth_provider.dart';
 import '../../core/common/constants/size_constant.dart';
-import '../../core/extension/media_extension.dart';
 import '../../core/resource/app_colors.dart';
 import '../../core/resource/icon_style.dart';
 import '../../core/resource/text_style.dart';
@@ -21,8 +21,12 @@ class ConversationPage extends StatefulWidget {
   String _receiverImage;
   String _receiverName;
 
-  ConversationPage(this._conversationID, this._receiverID, this._receiverName,
-      this._receiverImage);
+  ConversationPage(
+    this._conversationID,
+    this._receiverID,
+    this._receiverName,
+    this._receiverImage,
+  );
 
   @override
   State<StatefulWidget> createState() {
@@ -31,33 +35,39 @@ class ConversationPage extends StatefulWidget {
 }
 
 class _ConversationPageState extends State<ConversationPage> {
-  GlobalKey<FormState> _formKey;
-  ScrollController _listViewController;
   AuthProvider _auth;
   String _messageText;
-
-  String _UID_USER = "71f3FJ5nzVcxUbKhUUpAo5KmDsA2";
+  GlobalKey<FormState> _formKey;
+  ScrollController _listViewController;
+  MediaUtils mediaUtils;
 
   _ConversationPageState() {
+    _messageText = "";
     _formKey = GlobalKey<FormState>();
     _listViewController = ScrollController();
-    _messageText = "";
+    mediaUtils = MediaUtils();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _listViewController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeConstant().init(context);
+    SizeConstant.init(context);
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(249, 246, 247, 1),
       appBar: AppBar(
         leading: IconButton(
-          icon: arrowbackios_black,
+          icon: AppIcons.arrowbackios_black,
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 10,
         backgroundColor: AppColors.whiteColor,
-        title: Text(this.widget._receiverName, style: AppIcons.black_20),
+        title: Text(this.widget._receiverName, style: AppStyles.black_20),
       ),
       body: ChangeNotifierProvider<AuthProvider>.value(
         value: AuthProvider.instance,
@@ -108,7 +118,7 @@ class _ConversationPageState extends State<ConversationPage> {
                 itemCount: _conversationData.messages.length,
                 itemBuilder: (BuildContext _context, int _index) {
                   var _message = _conversationData.messages[_index];
-                  bool _isOwnMessage = _message.senderID == _UID_USER;
+                  bool _isOwnMessage = _message.senderID == this.widget._receiverID;
                   return _messageListViewChild(_isOwnMessage, _message);
                 },
               );
@@ -234,7 +244,7 @@ class _ConversationPageState extends State<ConversationPage> {
           ),
           Text(
             timeago.format(_timestamp.toDate()),
-            style: AppIcons.black_none,
+            style: AppStyles.black_none,
           ),
         ],
       ),
@@ -273,10 +283,7 @@ class _ConversationPageState extends State<ConversationPage> {
       width: SizeConstant.screenWidth * 0.55,
       child: TextFormField(
         validator: (_input) {
-          if (_input.length == 0) {
-            return "Please enter a message";
-          }
-          return null;
+          return _input.isNotEmpty ? null : "Please enter a message ";
         },
         onChanged: (_input) {
           _formKey.currentState.save();
@@ -299,7 +306,7 @@ class _ConversationPageState extends State<ConversationPage> {
       // height: _deviceHeight * 0.05,
       width: SizeConstant.screenWidth * 0.05,
       child: IconButton(
-          icon: send_blue,
+          icon: AppIcons.send_blue,
           onPressed: () {
             if (_formKey.currentState.validate()) {
               AccountRepositoryImpl.instance.sendMessage(
@@ -307,7 +314,7 @@ class _ConversationPageState extends State<ConversationPage> {
                 Message(
                     content: _messageText,
                     timestamp: Timestamp.now(),
-                    senderID: _UID_USER,
+                    senderID: this.widget._receiverID,
                     type: MessageType.Text),
               );
               _formKey.currentState.reset();
@@ -323,35 +330,36 @@ class _ConversationPageState extends State<ConversationPage> {
       width: SizeConstant.screenWidth * 0.1,
       child: FloatingActionButton(
         onPressed: () async {
-          var _image = await MediaExtension.instance.getImageFromLibrary();
+          var _image = await mediaUtils.getImageFromLibrary();
           if (_image != null) {
             var _result = await StorageRepositoryImpl.instance
-                .uploadMediaMessage(_UID_USER, _image);
+                .uploadMediaMessage(this.widget._receiverID, _image);
             var _imageURL = await _result.ref.getDownloadURL();
             await AccountRepositoryImpl.instance.sendMessage(
               this.widget._conversationID,
               Message(
                   content: _imageURL,
-                  senderID: _UID_USER,
+                  senderID: this.widget._receiverID,
                   timestamp: Timestamp.now(),
                   type: MessageType.Image),
             );
           }
         },
-        child: camera_none,
+        child: AppIcons.camera_none,
       ),
     );
   }
 
   Widget _microButton() {
     return Container(
-      child: micro_blue,
+      child: AppIcons.micro_blue,
     );
   }
 
   Widget _emojiButton() {
     return Container(
-      child: emoticon_blue_25,
+      child: AppIcons.emoticon_blue_25,
     );
   }
+
 }

@@ -4,19 +4,21 @@ import '../../../core/resource/icon_style.dart';
 import '../../../core/resource/text_style.dart';
 
 Widget appBar() {
+
   return AppBar(
     actions: [
       Container(
         margin: EdgeInsets.only(right: 20.0),
-        child: assignment_blue,
+        child: AppIcons.assignment_blue,
       ),
     ],
     title: Text(
       'Chats',
       textAlign: TextAlign.start,
-      style: AppIcons.black_none,
+      style: AppStyles.black_none,
     ),
     elevation: 10,
     backgroundColor: AppColors.whiteColor,
   );
+
 }

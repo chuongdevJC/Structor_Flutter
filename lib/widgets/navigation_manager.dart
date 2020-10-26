@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class NavigationExtension {
+class NavigationManager {
   GlobalKey<NavigatorState> navigatorKey;
 
-  static NavigationExtension instance = NavigationExtension();
+  static final NavigationManager instance = NavigationManager._instance();
 
-  NavigationExtension() {
+  factory NavigationManager(){
+    return instance;
+  }
+
+  NavigationManager._instance() {
     navigatorKey = GlobalKey<NavigatorState>();
   }
 
@@ -25,4 +29,5 @@ class NavigationExtension {
   void goBack() {
     return navigatorKey.currentState.pop();
   }
+
 }

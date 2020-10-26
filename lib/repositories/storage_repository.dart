@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import '../data/source/remote/storage_remote_datasource.dart';
 
 abstract class StorageRepository {
-
   Future<StorageTaskSnapshot> uploadUserImage(String _uid, File _image);
 
   Future<StorageTaskSnapshot> uploadMediaMessage(String _uid, File _file);
@@ -12,17 +11,22 @@ abstract class StorageRepository {
 
 @Singleton(as: StorageRepository)
 class StorageRepositoryImpl implements StorageRepository {
-  static StorageRepositoryImpl instance = StorageRepositoryImpl();
+  static final StorageRepositoryImpl instance = StorageRepositoryImpl();
 
-  final StorageRemoteDataSourceImpl _storageRemoteDataSource = StorageRemoteDataSourceImpl();
+  factory StorageRepositoryImpl() {
+    return instance;
+  }
+
+  StorageRepositoryImpl._instance();
 
   @override
   Future<StorageTaskSnapshot> uploadMediaMessage(String _uid, _file) {
-    return _storageRemoteDataSource.uploadMediaMessage(_uid, _file);
+    return StorageRemoteDataSourceImpl.instance.uploadMediaMessage(_uid, _file);
   }
 
   @override
   Future<StorageTaskSnapshot> uploadUserImage(String _uid, _image) {
-    return _storageRemoteDataSource.uploadUserImage(_uid, _image);
+    return StorageRemoteDataSourceImpl.instance.uploadUserImage(_uid, _image);
   }
+
 }

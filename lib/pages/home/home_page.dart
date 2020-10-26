@@ -11,12 +11,16 @@ import '../conversation/recent_conversation_page.dart';
 import 'widgets/app_bar.dart';
 
 class HomePage extends StatefulWidget {
+  HomePage(this.uid);
+
+  String uid;
+
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
   TabController _tabController;
 
@@ -34,7 +38,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    SizeConstant().init(context);
+    SizeConstant.init(context);
     return Scaffold(
         appBar: appBar(),
         bottomNavigationBar: Material(
@@ -49,21 +53,22 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
   }
 
   static final _tabBarItems = <Tab>[
-    Tab(icon: chat_blue),
-    Tab(icon: call_blue),
-    Tab(icon: people_blue),
-    Tab(icon: setting_blue),
+    Tab(icon: AppIcons.chat_blue),
+    Tab(icon: AppIcons.call_blue),
+    Tab(icon: AppIcons.people_blue),
+    Tab(icon: AppIcons.setting_blue),
   ];
 
   Widget _tabBarPages() {
     return TabBarView(
       controller: _tabController,
       children: <Widget>[
-        RecentConversationsPage(),
+        RecentConversationsPage(this.widget.uid),
         FriendPage(),
         MessagePage(),
         SettingPage(),
       ],
     );
   }
+
 }

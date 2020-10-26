@@ -3,34 +3,24 @@ import 'package:provider/provider.dart';
 import '../../../../bloc/blocs/auth_provider.dart';
 import '../../../../core/common/constants/size_constant.dart';
 import '../../../../core/resource/text_style.dart';
+import 'package:email_validator/email_validator.dart';
 
 class InputForm extends StatefulWidget {
+  InputForm(this.emailController, this.passwordController);
+
+  TextEditingController emailController;
+  TextEditingController passwordController;
+
   @override
   _InputFormState createState() => _InputFormState();
 }
 
 class _InputFormState extends State<InputForm> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool isPassword = false;
-  AuthProvider _auth;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
+  bool _isObscureText = true;
 
   @override
   Widget build(BuildContext context) {
-    _auth = Provider.of<AuthProvider>(context);
-    SizeConstant().init(context);
+    SizeConstant.init(context);
     return Container(
       height: SizeConstant.screenHeight * 0.3,
       child: Column(
@@ -50,16 +40,14 @@ class _InputFormState extends State<InputForm> {
           alignment: Alignment.topLeft,
           child: Text(
             'Email',
-            style: AppIcons.black38_16,
+            style: AppStyles.black38_16,
           ),
         ),
         TextFormField(
-          controller: _emailController,
-          validator: (_input) {
-            return _input.length != 0 && _input.contains("@")
-                ? null
-                : "Please enter a valid email";
-          },
+          controller: this.widget.emailController,
+          validator: (_input) => EmailValidator.validate(_input)
+              ? null
+              : "Please enter a valid email",
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.email),
             hintText: 'Enter your email',
@@ -78,22 +66,22 @@ class _InputFormState extends State<InputForm> {
           alignment: Alignment.topLeft,
           child: Text(
             'Password',
-            style: AppIcons.black38_16,
+            style: AppStyles.black38_16,
           ),
         ),
         TextFormField(
-          controller: _passwordController,
+          controller: this.widget.passwordController,
           autocorrect: false,
-          obscureText: true,
+          obscureText: _isObscureText,
           validator: (_input) {
-            return _input.length != 0 ? null : "Please enter a password";
+            return _input.isNotEmpty ? null : "Please enter a password";
           },
           decoration: InputDecoration(
             hintText: 'Enter your password',
             prefixIcon: Icon(Icons.security),
             suffixIcon: IconButton(
               onPressed: () {
-                setState(() => this.isPassword = !this.isPassword);
+                setState(() => this._isObscureText = !this._isObscureText);
               },
               icon: Icon(
                 Icons.remove_red_eye,
@@ -105,4 +93,5 @@ class _InputFormState extends State<InputForm> {
       ],
     );
   }
+
 }

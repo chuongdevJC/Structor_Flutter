@@ -1,49 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:provider/provider.dart';
-
+import '../../../../widgets/navigation_manager.dart';
+import '../../../../widgets/snackbar_service.dart';
 import '../../../../bloc/blocs/auth_provider.dart';
 import '../../../../core/common/constants/size_constant.dart';
 import '../../../../core/resource/app_colors.dart';
 import '../../../../core/resource/text_style.dart';
-import '../../../../pages/authen/register/register_page.dart';
 import '../../../../pages/home/home_page.dart';
 
 class ButtonForm extends StatefulWidget {
-  GlobalKey<FormState> formKey;
+  ButtonForm(this.formKey, this.emailController, this.passwordController);
 
-  ButtonForm(this.formKey);
+  GlobalKey<FormState> formKey;
+  TextEditingController emailController;
+  TextEditingController passwordController;
 
   @override
-  _ButtonFormState createState() => _ButtonFormState(this.formKey);
+  _ButtonFormState createState() => _ButtonFormState();
 }
 
 class _ButtonFormState extends State<ButtonForm> {
-  AuthProvider _auth;
-  bool isPassword = false;
-
-  GlobalKey<FormState> formKey;
-  _ButtonFormState(this.formKey);
-
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    SizeConstant().init(context);
-    _auth = Provider.of<AuthProvider>(context);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-  }
+  var userUid;
 
   @override
   Widget build(BuildContext context) {
+    SizeConstant.init(context);
     return Container(
       height: SizeConstant.screenHeight * 0.4,
       child: Column(
@@ -61,18 +42,21 @@ class _ButtonFormState extends State<ButtonForm> {
               color: AppColors.lightBlueColor,
             ),
             child: FlatButton(
-              onPressed: () {
-                if (this.formKey.currentState.validate()) {
-                  _auth.loginUserWithEmailAndPassword(
-                      _emailController.text.toString(),
-                      _passwordController.text.toString());
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
+              onPressed: () async {
+                String email = this.widget.emailController.text.toString().trim();
+                String password = this.widget.passwordController.text.toString().trim();
+                if (this.widget.formKey.currentState.validate()) {
+                  userUid = await AuthProvider.instance.loginUserWithEmailAndPassword(email, password);
+                  if (userUid == null) {
+                    SnackBarService.instance.showSnackBarError('Login not successful ! ');
+                  } else {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(userUid)));
+                  }
                 }
               },
               child: Text(
                 'LOGIN',
-                style: AppIcons.white_bold_11,
+                style: AppStyles.white_bold_11,
               ),
             ),
           ),
@@ -82,13 +66,16 @@ class _ButtonFormState extends State<ButtonForm> {
               Text("You don't have a account?"),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => RegisterPage()));
+                  NavigationManager().navigateToRoute(MaterialPageRoute(
+                    builder: (context) {
+                      return HomePage(userUid);
+                    },
+                  ));
                 },
                 child: Container(
                   child: Text(
                     ' Sign up',
-                    style: AppIcons.black_none,
+                    style: AppStyles.black_none,
                   ),
                 ),
               ),
@@ -114,4 +101,5 @@ class _ButtonFormState extends State<ButtonForm> {
       ),
     );
   }
+
 }

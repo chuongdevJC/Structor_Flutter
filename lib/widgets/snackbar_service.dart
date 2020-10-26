@@ -4,9 +4,13 @@ import 'package:flutter/widgets.dart';
 class SnackBarService {
   BuildContext _buildContext;
 
-  static SnackBarService instance = SnackBarService();
+  static final SnackBarService instance = SnackBarService._instance();
 
-  SnackBarService() {}
+  factory SnackBarService() {
+    return instance;
+  }
+
+  SnackBarService._instance();
 
   set buildContext(BuildContext _context) {
     _buildContext = _context;
@@ -37,4 +41,5 @@ class SnackBarService {
       ),
     );
   }
+
 }

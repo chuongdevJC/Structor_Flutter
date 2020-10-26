@@ -8,12 +8,13 @@ Widget ProfileAvatar() {
       CircleAvatar(
         radius: 50,
         backgroundImage:
-            NetworkImage(avatar_image),
+            NetworkImage(AssetImages.avatar_image),
       ),
       Text(
         'Thuyen Pham',
-        style: AppIcons.font_25,
+        style: AppStyles.font_25,
       ),
     ],
   );
+
 }

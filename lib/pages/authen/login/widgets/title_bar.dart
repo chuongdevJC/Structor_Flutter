@@ -9,8 +9,9 @@ class TitleApp extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Text(
         'CHAT CHIT',
-        style: AppIcons.blue_18,
+        style: AppStyles.blue_18,
       ),
     );
   }
+
 }

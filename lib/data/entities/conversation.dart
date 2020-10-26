@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'message.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ConversationSnippet {
   final String id;
@@ -11,15 +11,16 @@ class ConversationSnippet {
   final int unseenCount;
   final Timestamp timestamp;
 
-  ConversationSnippet(
-      {this.conversationID,
-        this.id,
-        this.lastMessage,
-        this.unseenCount,
-        this.timestamp,
-        this.name,
-        this.image,
-        this.type});
+  ConversationSnippet({
+    this.conversationID,
+    this.id,
+    this.lastMessage,
+    this.unseenCount,
+    this.timestamp,
+    this.name,
+    this.image,
+    this.type,
+  });
 
   factory ConversationSnippet.fromFirestore(DocumentSnapshot _snapshot) {
     var _data = _snapshot.data;
@@ -35,7 +36,7 @@ class ConversationSnippet {
       }
     }
     return ConversationSnippet(
-      id: _snapshot.documentID,
+      id: _snapshot.id,
       conversationID: _data()["conversationID"],
       lastMessage: _data()["lastMessage"] != null ? _data()["lastMessage"] : "",
       unseenCount: _data()["unseenCount"],
@@ -45,6 +46,7 @@ class ConversationSnippet {
       type: _messageType,
     );
   }
+
 }
 
 class Conversation {
@@ -55,26 +57,23 @@ class Conversation {
 
   Conversation({this.id, this.members, this.ownerID, this.messages});
 
-  factory Conversation.fromFirestore(DocumentSnapshot _snapshot) {
+  factory Conversation.fromFireStore(DocumentSnapshot _snapshot) {
     var _data = _snapshot.data;
     List _messages = _data()["messages"];
     if (_messages != null) {
       _messages = _messages.map(
-            (_m) {
-          return Message(
-              type: _m["type"] == "text" ? MessageType.Text : MessageType.Image,
-              content: _m["message"],
-              timestamp: _m["timestamp"],
-              senderID: _m["senderID"]);
+        (_m) {
+          return Message.parseDataToObject(_m);
         },
       ).toList();
     } else {
       _messages = [];
     }
     return Conversation(
-        id: _snapshot.documentID,
+        id: _snapshot.id,
         members: _data()["members"],
         ownerID: _data()["ownerID"],
         messages: _messages);
   }
+
 }

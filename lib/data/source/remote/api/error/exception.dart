@@ -9,7 +9,3 @@ class Exception {
     return super.toString();
   }
 }
-
-class UnauthorizedException extends Exception {
-
-}

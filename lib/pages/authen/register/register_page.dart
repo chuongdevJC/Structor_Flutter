@@ -40,4 +40,5 @@ class _SignUpState extends State<RegisterPage> {
       },
     );
   }
+
 }

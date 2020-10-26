@@ -25,7 +25,7 @@ class _AllowProfileState extends State<AllowProfile> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Center(
-            child: Text('${this.allow}', style: AppIcons.font_14),
+            child: Text('${this.allow}', style: AppStyles.font_14),
           ),
           Container(
             width: 55,
@@ -45,4 +45,5 @@ class _AllowProfileState extends State<AllowProfile> {
       ),
     );
   }
+
 }

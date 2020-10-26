@@ -34,4 +34,5 @@ class _SettingState extends State<SettingPage> {
       ),
     );
   }
+
 }

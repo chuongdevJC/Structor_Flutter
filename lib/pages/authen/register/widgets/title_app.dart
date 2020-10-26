@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/resource/text_style.dart';
 
 class TitleApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -9,8 +10,9 @@ class TitleApp extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Text(
         'CHAT CHIT',
-        style: AppIcons.blue_18,
+        style: AppStyles.blue_18,
       ),
     );
   }
+
 }

@@ -14,19 +14,28 @@ class LogoutButton extends StatefulWidget {
 class _LogoutState extends State<LogoutButton> {
   @override
   Widget build(BuildContext context) {
-    SizeConstant().init(context);
+    SizeConstant.init(context);
     return Container(
       child: FlatButton(
         color: AppColors.redColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
-        onPressed: () {},
+        onPressed: () {
+          setState(() {
+            AuthProvider.instance.logoutUser(() {
+              print('Logout account !');
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => LoginPage()));
+            });
+          });
+        },
         child: Text(
           'LOGOUT',
-          style: AppIcons.white_15,
+          style: AppStyles.white_15,
         ),
       ),
     );
   }
+
 }

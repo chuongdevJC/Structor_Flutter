@@ -3,10 +3,8 @@ import 'dart:convert';
 import 'package:path/path.dart';
 import 'package:injectable/injectable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import '../../../data/entities/user.dart';
 
 abstract class StorageRemoteDataSource {
-  Future<List<UserGitEntity>> getUser(int page);
 
   Future<StorageTaskSnapshot> uploadUserImage(String _uid, File _image);
 
@@ -15,37 +13,23 @@ abstract class StorageRemoteDataSource {
 
 @Singleton(as: StorageRemoteDataSource)
 class StorageRemoteDataSourceImpl implements StorageRemoteDataSource {
-  // final DioClient _dioClient;
-  //
-  // StorageRemoteDataSourceImpl(this._dioClient);
-  //
-  // @override
-  // Future<List<UserGitEntity>> getUser(int page) async {
-  //   final response = await _dioClient.get('/search/users',
-  //       queryParameters: {'q': 'abc', 'page': page, 'per_page': 10});
-  //   return UserGitResponse.fromJson(response).userGits;
-  // }
+  //Singleton
+  static final StorageRemoteDataSourceImpl instance = StorageRemoteDataSourceImpl._instance();
 
-  @override
-  Future<List<UserGitEntity>> getUser(int page) {
-    // TODO: implement getUser
-    throw UnimplementedError();
+  factory StorageRemoteDataSourceImpl(){
+    return instance;
   }
 
-  static StorageRemoteDataSourceImpl instance = StorageRemoteDataSourceImpl();
+  StorageRemoteDataSourceImpl._instance(){
+    _baseRef = _storage.ref();
+    _storage = FirebaseStorage.instance;
+  }
 
   FirebaseStorage _storage;
   StorageReference _baseRef;
-
-  String _profileImages = "profile_images";
-  String _messages = "messages";
   String _images = "images";
-
-  StorageRemoteDataSourceImpl() {
-    _storage = FirebaseStorage.instance;
-    _baseRef = _storage.ref();
-  }
-
+  String _messages = "messages";
+  String _profileImages = "profile_images";
 
   @override
   Future<StorageTaskSnapshot> uploadMediaMessage(String _uid, File _file) {
@@ -62,6 +46,7 @@ class StorageRemoteDataSourceImpl implements StorageRemoteDataSource {
           .onComplete;
     } catch (e) {
       print(e);
+      return null;
     }
   }
 
@@ -75,6 +60,8 @@ class StorageRemoteDataSourceImpl implements StorageRemoteDataSource {
           .onComplete;
     } catch (e) {
       print(e);
+      return null;
     }
   }
+
 }

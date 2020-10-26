@@ -25,9 +25,10 @@ class _CheckBoxFormState extends State<CheckBoxForm> {
             ),
             Text(
               'Remember',
-              style: AppIcons.black_12,
+              style: AppStyles.black_12,
             )
           ],
         ));
   }
+
 }

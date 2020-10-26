@@ -5,13 +5,15 @@ import '../../../data/entities/conversation.dart';
 import '../../../data/entities/message.dart';
 
 abstract class AccountRemoteDataSource {
-  Future<void> createUser(String _uid, String _name, String _email, String _imageURL);
+  Future<void> createUser(
+      String _uid, String _name, String _email, String _imageURL);
 
   Future<void> updateUserLastSeenTime(String _userID);
 
   Future<void> sendMessage(String _conversationID, Message _message);
 
-  Future<void> createConversation(String _currentID, String _recepientID, Future<void> _onSuccess(String _conversationID));
+  Future<void> createConversation(String _currentID, String _recipientID,
+      Future<void> _onSuccess(String _conversationID));
 
   Stream<Contact> getUserData(String _userID);
 
@@ -24,20 +26,23 @@ abstract class AccountRemoteDataSource {
 
 @Singleton(as: AccountRemoteDataSource)
 class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
+  // Singleton
+  static final AccountRemoteDataSourceImpl instance = AccountRemoteDataSourceImpl._instance();
 
-  FirebaseFirestore _db;
+  factory AccountRemoteDataSourceImpl() {
+    return instance;
+  }
 
-  AccountRemoteDataSourceImpl() {
+  AccountRemoteDataSourceImpl._instance() {
     _db = FirebaseFirestore.instance;
   }
 
+  FirebaseFirestore _db;
   String _userCollection = "Users";
   String _conversationsCollection = "Conversations";
 
-  static AccountRemoteDataSourceImpl instance = AccountRemoteDataSourceImpl();
-
   @override
-  Future<void> createConversation(String _currentID, String _recepientID,
+  Future<void> createConversation(String _currentID, String _recipientID,
       Future<void> Function(String _conversationID) _onSuccess) async {
     var _ref = _db.collection(_conversationsCollection);
     var _userConversationRef = _db
@@ -45,19 +50,19 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         .doc(_currentID)
         .collection(_conversationsCollection);
     try {
-      var conversation = await _userConversationRef.doc(_recepientID).get();
+      var conversation = await _userConversationRef.doc(_recipientID).get();
       if (conversation.data != null) {
         return _onSuccess(conversation.data()["conversationID"]);
       } else {
         var _conversationRef = _ref.doc();
         await _conversationRef.setData(
           {
-            "members": [_currentID, _recepientID],
+            "members": [_currentID, _recipientID],
             "ownerID": _currentID,
             'messages': [],
           },
         );
-        return _onSuccess(_conversationRef.documentID);
+        return _onSuccess(_conversationRef.id);
       }
     } catch (e) {
       print(e);
@@ -69,7 +74,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
     var _ref = _db.collection(_conversationsCollection).doc(_conversationID);
     return _ref.snapshots().map(
       (_doc) {
-        return Conversation.fromFirestore(_doc);
+        return Conversation.fromFireStore(_doc);
       },
     );
   }
@@ -155,4 +160,5 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
       print(e);
     }
   }
+
 }

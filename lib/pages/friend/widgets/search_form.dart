@@ -25,7 +25,7 @@ class _SearchState extends State<SearchForm> {
           enabledBorder: InputBorder.none,
           errorBorder: InputBorder.none,
           disabledBorder: InputBorder.none,
-          prefixIcon: search_blue,
+          prefixIcon: AppIcons.search_blue,
           hintText: 'Search',
         ),
       ),

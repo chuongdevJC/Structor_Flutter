@@ -12,7 +12,7 @@ abstract class AccountRepository {
 
   Future<void> sendMessage(String _conversationID, Message _message);
 
-  Future<void> createOrGetConversation(String _currentID, String _recepientID, Future<void> _onSuccess(String _conversationID));
+  Future<void> createConversation(String _currentID, String _recipientID, Future<void> _onSuccess(String _conversationID));
 
   Stream<Contact> getUserData(String _userID);
 
@@ -26,49 +26,53 @@ abstract class AccountRepository {
 @Singleton(as: AccountRepository)
 class AccountRepositoryImpl implements AccountRepository {
 
-  static AccountRepositoryImpl instance = AccountRepositoryImpl();
-
-  final AccountRemoteDataSourceImpl _accountRemoteDataSourceImpl = AccountRemoteDataSourceImpl();
-
+  //Singleton
+  static final AccountRepositoryImpl instance = AccountRepositoryImpl._instance();
+  factory AccountRepositoryImpl(){
+    return instance;
+  }
+  AccountRepositoryImpl._instance();
+  
   @override
-  Future<void> createOrGetConversation(String _currentID, String _recepientID,
+  Future<void> createConversation(String _currentID, String _recipientID,
       Future<void> Function(String _conversationID) _onSuccess) {
-    return _accountRemoteDataSourceImpl.createConversation(
-        _currentID, _recepientID, (_conversationID) => null);
+    return AccountRemoteDataSourceImpl.instance.createConversation(
+        _currentID, _recipientID, (_conversationID) => null);
   }
 
   @override
   Future<void> createUser(String _uid, String _name, String _email, String _imageURL) {
-    return _accountRemoteDataSourceImpl.createUser(_uid, _name, _email, _imageURL);
+    return AccountRemoteDataSourceImpl.instance.createUser(_uid, _name, _email, _imageURL);
   }
 
   @override
   Stream<Conversation> getConversation(String _conversationID) {
-    return _accountRemoteDataSourceImpl.getConversation(_conversationID);
+    return AccountRemoteDataSourceImpl.instance.getConversation(_conversationID);
   }
 
   @override
   Stream<List<ConversationSnippet>> getUserConversations(String _userID) {
-    return _accountRemoteDataSourceImpl.getUserConversations(_userID);
+    return AccountRemoteDataSourceImpl.instance.getUserConversations(_userID);
   }
 
   @override
   Stream<Contact> getUserData(String _userID) {
-    return _accountRemoteDataSourceImpl.getUserData(_userID);
+    return AccountRemoteDataSourceImpl.instance.getUserData(_userID);
   }
 
   @override
   Future<void> sendMessage(String _conversationID, Message _message) {
-    return _accountRemoteDataSourceImpl.sendMessage(_conversationID, _message);
+    return AccountRemoteDataSourceImpl.instance.sendMessage(_conversationID, _message);
   }
 
   @override
   Future<void> updateUserLastSeenTime(String _userID) {
-    return _accountRemoteDataSourceImpl.updateUserLastSeenTime(_userID);
+    return AccountRemoteDataSourceImpl.instance.updateUserLastSeenTime(_userID);
   }
 
   @override
   Stream<List<Contact>> searchUsersByName(String _searchName) {
-    return _accountRemoteDataSourceImpl.searchUsersByName(_searchName);
+    return AccountRemoteDataSourceImpl.instance.searchUsersByName(_searchName);
   }
+
 }

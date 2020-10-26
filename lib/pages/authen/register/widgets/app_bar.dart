@@ -9,10 +9,13 @@ Widget appBar(BuildContext context) {
       backgroundColor: AppColors.whiteColor,
       leading: IconButton(
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => LoginPage()));
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => LoginPage(),
+            ),
+          );
         },
-        icon: arrowback_none,
+        icon: AppIcons.arrowback_none,
         color: AppColors.blackColor,
       ));
 }

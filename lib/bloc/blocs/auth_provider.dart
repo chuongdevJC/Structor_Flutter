@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../core/common/enums/authenticate.dart';
-import '../../core/extension/navigation_extension.dart';
 import '../../repositories/account_repository.dart';
-import '../../widgets/snackbar_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   User user;
   AuthStatus status;
-
   FirebaseAuth auth;
+  static final AuthProvider instance = AuthProvider._instance();
 
-  static AuthProvider instance = AuthProvider();
+  factory AuthProvider() {
+    return instance;
+  }
 
-  AuthProvider() {
+  AuthProvider._instance() {
     auth = FirebaseAuth.instance;
     _checkCurrentUserIsAuthenticated();
   }
 
   void _autoLogin() async {
     if (user != null) {
-      await AccountRepositoryImpl.instance.updateUserLastSeenTime(user.uid);
-      return NavigationExtension.instance.navigateToReplacement("home");
+      return await AccountRepositoryImpl.instance
+          .updateUserLastSeenTime(user.uid);
     }
   }
 
@@ -33,25 +33,22 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  void loginUserWithEmailAndPassword(String _email, String _password) async {
+  Future<String> loginUserWithEmailAndPassword(
+      String _email, String _password) async {
     status = AuthStatus.Authenticating;
+    print('$_email - $_password');
     notifyListeners();
     try {
       UserCredential _userCredential = await auth.signInWithEmailAndPassword(
-          email: "$_email", password: "$_password");
-      user = _userCredential.user;
+          email: _email, password: _password);
       status = AuthStatus.Authenticated;
-
-      SnackBarService.instance.showSnackBarSuccess("Welcome, ${user.email}");
       await AccountRepositoryImpl.instance.updateUserLastSeenTime(user.uid);
-      NavigationExtension.instance.navigateToReplacement("home");
+      return _userCredential.user.uid;
     } catch (e) {
       status = AuthStatus.Error;
-      user = null;
-      print("Error Authenticating");
-      SnackBarService.instance.showSnackBarError("Error Authenticating");
+      print(e.toString());
+      return null;
     }
-    notifyListeners();
   }
 
   void registerUserWithEmailAndPassword(String _email, String _password,
@@ -63,18 +60,12 @@ class AuthProvider extends ChangeNotifier {
           .createUserWithEmailAndPassword(
               email: "$_email", password: "$_password");
       user = _userCredential.user;
-      print("VALUE: ${user.uid}");
-
       status = AuthStatus.Authenticated;
       await onSuccess(user.uid);
-      SnackBarService.instance.showSnackBarSuccess("Welcome, ${user.email}");
       await AccountRepositoryImpl.instance.updateUserLastSeenTime(user.uid);
-      NavigationExtension.instance.goBack();
-      NavigationExtension.instance.navigateToReplacement("home");
     } catch (e) {
       status = AuthStatus.Error;
       user = null;
-      SnackBarService.instance.showSnackBarError("Error Registering User");
     }
     notifyListeners();
   }
@@ -85,11 +76,10 @@ class AuthProvider extends ChangeNotifier {
       user = null;
       status = AuthStatus.NotAuthenticated;
       await onSuccess();
-      await NavigationExtension.instance.navigateToReplacement("login");
-      SnackBarService.instance.showSnackBarSuccess("Logged Out Successfully!");
     } catch (e) {
-      SnackBarService.instance.showSnackBarError("Error Logging Out");
+      print(e);
     }
     notifyListeners();
   }
+
 }

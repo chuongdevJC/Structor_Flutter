@@ -10,7 +10,7 @@ class MessagePage extends StatefulWidget {
 }
 
 class _MessageState extends State<MessagePage> {
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
   @override
   Widget build(BuildContext context) {
@@ -98,4 +98,5 @@ class _MessageState extends State<MessagePage> {
       trailing: Text('${convertTimeStampToHour(document)}'),
     );
   }
+
 }

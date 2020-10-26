@@ -12,11 +12,12 @@ class Contact {
   factory Contact.fromFirestore(DocumentSnapshot _snapshot) {
     var _data = _snapshot.data;
     return Contact(
-      id: _snapshot.documentID,
+      id: _snapshot.id,
       lastseen: _data()["lastSeen"],
       email: _data()["email"],
       name: _data()["name"],
       image: _data()["image"],
     );
   }
+
 }
