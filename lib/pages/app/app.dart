@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/di/injection.dart';
-import 'package:structure_flutter/pages/authen/login/login_page.dart';
+import 'package:structure_flutter/pages/authen/login/login_screen.dart';
 import 'package:structure_flutter/pages/home/home_page.dart';
 import 'package:structure_flutter/pages/splash/splash_screen.dart';
 

@@ -35,5 +35,6 @@ GetIt $initGetIt(
   gh.singleton<SnackBarWidget>(SnackBarWidget());
   gh.singleton(AuthenticationBloc(Uninitialized()));
   gh.factory<LoginBloc>(() => LoginBloc(LoginState.empty()));
+  gh.factory<RegisterBloc>(() => RegisterBloc(RegisterState.empty()));
   return get;
 }

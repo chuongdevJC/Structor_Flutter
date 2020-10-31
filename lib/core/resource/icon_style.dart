@@ -17,6 +17,7 @@ class AppIcons {
   static const people_blue = Icon(Icons.people, color: Colors.blue);
   static const search_blue = Icon(Icons.search, color: Colors.blue);
   static const setting_blue = Icon(Icons.settings, color: Colors.blue);
+  static const account_balance_wallet_blue = Icon(Icons.account_balance_wallet, color: Colors.blue);
   static const assignment_blue = Icon(Icons.assignment, color: Colors.blue);
   static const emoticon_blue_25 = Icon(Icons.insert_emoticon, color: AppColors.blue, size: 25);
 

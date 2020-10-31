@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/text_style.dart';
 
-class LoginButton extends StatelessWidget {
-  final VoidCallback _onPressed;
+class RegisterButton extends StatelessWidget {
+  final RegisterBloc _registerBloc;
 
-  LoginButton({Key key, VoidCallback onPressed})
-      : _onPressed = onPressed,
-        super(key: key);
+  final TextEditingController _emailController;
+
+  final TextEditingController _passwordController;
+
+  RegisterButton(
+    this._emailController,
+    this._passwordController,
+    this._registerBloc,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +30,19 @@ class LoginButton extends StatelessWidget {
         color: AppColors.lightBlueColor,
       ),
       child: FlatButton(
-        onPressed: _onPressed,
+        onPressed: () => registerSubmitted(),
         child: Text(
-          'LOGIN',
+          'REGISTER',
           style: AppStyles.white_bold_11,
         ),
       ),
     );
+  }
+
+  void registerSubmitted() {
+    _registerBloc.add(RegisterWithCredentials(
+      email: _emailController.text,
+      password: _passwordController.text,
+    ));
   }
 }

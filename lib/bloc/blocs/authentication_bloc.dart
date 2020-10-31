@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:structure_flutter/repositories/user_repository.dart';
 import '../bloc.dart';
 import '../../di/injection.dart';
 import '../../repositories/user_repository.dart';
 
 @singleton
-class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
+class AuthenticationBloc
+    extends Bloc<AuthenticationEvent, AuthenticationState> {
   final _userRepository = getIt<UserRepository>();
 
   AuthenticationBloc(AuthenticationState initialState) : super(initialState);

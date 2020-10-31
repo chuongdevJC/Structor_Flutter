@@ -10,19 +10,32 @@ class GoogleLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton.icon(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      icon: Icon(
-        FontAwesomeIcons.google,
-        color: AppColors.white,
-      ),
-      onPressed: () {
-        _loginBloc.add(LoginWithGoogle());
-      },
-      label: Text('Sign in with Google', style: AppStyles.white_16),
-      color: AppColors.red,
-    );
+    return Container(
+        height: 35,
+        margin: EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          gradient: LinearGradient(
+              colors: [AppColors.red, AppColors.lightBlueAccentColor]),
+          color: AppColors.lightBlueColor,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              FontAwesomeIcons.google,
+              color: AppColors.white,
+            ),
+            FlatButton(
+              onPressed: () {
+                _loginBloc.add(LoginWithGoogle());
+              },
+              child: Text(
+                'SIGN IN WITH GOOGLE',
+                style: AppStyles.white_bold_11,
+              ),
+            ),
+          ],
+        ));
   }
 }
