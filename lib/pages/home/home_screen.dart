@@ -1,12 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/di/injection.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:structure_flutter/pages/friend_list/friend_list_screen.dart';
+import 'package:structure_flutter/pages/recent_conversation/recent_conversation.dart';
 import 'package:structure_flutter/pages/setting/setting_screen.dart';
+
 import '../../core/resource/icon_style.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -74,9 +76,9 @@ class _HomeState extends State<HomeScreen> with SingleTickerProviderStateMixin {
     return TabBarView(
       controller: _tabController,
       children: <Widget>[
-        Text('Recent conversation screen !'),
-        Text('List friend screen !'),
-        Text('Group friend screen!'),
+        RecentConversationScreen(user),
+        FriendListScreen(user),
+        Text('Notification !'),
         SettingScreen(user),
       ],
     );
