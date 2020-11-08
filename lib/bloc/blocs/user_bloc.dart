@@ -5,7 +5,10 @@ import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:structure_flutter/bloc/events/user_event.dart';
 import 'package:structure_flutter/bloc/states/user_state.dart';
+import 'package:structure_flutter/core/common/helpers/state_helper.dart';
 import 'package:structure_flutter/data/models/user.dart';
+import 'package:structure_flutter/data/source/remote/api/error/failures.dart';
+import 'package:structure_flutter/data/source/remote/api/request/get_user_request.dart';
 import 'package:structure_flutter/data/source/remote/result.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/repositories/user_repository.dart';
@@ -14,46 +17,43 @@ import 'package:structure_flutter/repositories/user_repository.dart';
 class UserGitBloc extends Bloc<UserGitEvent, UserGitState> {
   final UserRepository _userRepository = getIt<UserRepository>();
 
-  UserGitBloc();
+  UserGitBloc() : super(UserGitUnInitialized());
 
   @override
-  Stream<UserGitState> transform(Stream<UserGitEvent> events,
-      Stream<UserGitState> Function(UserGitEvent event) next) {
-    return super.transform(
-        (events as Observable<UserGitEvent>)
-            .debounceTime(Duration(milliseconds: 500)),
-        next);
+  Stream<Transition<UserGitEvent, UserGitState>> transformEvents(
+      Stream<UserGitEvent> events, transitionFn) {
+    return super.transformEvents(
+        events.debounceTime(Duration(milliseconds: 500)), transitionFn);
   }
 
   @override
-  UserGitState get initialState => UserGitUnInitialized();
-
-  @override
   Stream<UserGitState> mapEventToState(UserGitEvent event) async* {
-    if (event is Fetch && !_hasReachedMax(currentState)) {
-      try {
-        if (currentState is UserGitUnInitialized) {
-          await for (Result<List<User>> result in fetchUserGitNetworkBound(1)) {
-            yield result.whenWithResult((success) {
-              return UserGitLoaded(users: success.data, hasReachMax: false);
-            }, (inProgress) {
-              return UserGitLoaded(users: inProgress.data, hasReachMax: false);
-            }, (error) {
-              return UserGitError();
-            });
-          }
-        } else if (currentState is UserGitLoaded) {
-          var page =
-              ((currentState as UserGitLoaded).users.length / 10).ceil() + 1;
-          final users = await fetchUserGit(page);
-          yield users.length < 10
-              ? (currentState as UserGitLoaded).copyWith(hasReachedMax: true)
-              : UserGitLoaded(
-                  users: (currentState as UserGitLoaded).users + users,
-                  hasReachMax: false);
+    if (event is Fetch && !_hasReachedMax(state)) {
+      if (state is UserGitUnInitialized) {
+        await for (Result<State<List<User>, Failures>> result
+            in fetchUserGitNetworkBound(1)) {
+          yield result.whenWithResult((success) {
+            return (success.data as State).fold(
+                (users) => UserGitLoaded(users: users, hasReachMax: false),
+                (e) => UserGitError());
+          }, (inProgress) {
+            return (inProgress.data as State).fold(
+                (users) => UserGitLoaded(users: users, hasReachMax: false),
+                (e) => UserGitError());
+          }, (error) {
+            return UserGitError();
+          });
         }
-      } catch (_) {
-        yield UserGitError();
+      } else if (state is UserGitLoaded) {
+        final page = ((state as UserGitLoaded).users.length / 10).ceil() + 1;
+        final data = await fetchUserGit(page);
+        yield data.fold(
+            (users) => users.length < 10
+                ? (state as UserGitLoaded).copyWith(hasReachedMax: true)
+                : UserGitLoaded(
+                    users: (state as UserGitLoaded).users + users,
+                    hasReachMax: false),
+            (e) => UserGitError());
       }
     }
   }
@@ -61,23 +61,16 @@ class UserGitBloc extends Bloc<UserGitEvent, UserGitState> {
   bool _hasReachedMax(UserGitState state) =>
       state is UserGitLoaded && state.hasReachMax;
 
-  Stream<Result<List<User>>> fetchUserGitNetworkBound(int page) {
-    return _userRepository.getListUserNetworkBound(page);
+  Stream<Result<State<List<User>, Failures>>> fetchUserGitNetworkBound(
+      int page) {
+    return _userRepository.getListUserNetworkBound(_getUsersRequest(page));
   }
 
-  Future<List<User>> fetchUserGit(int page) async {
-    return _userRepository.getUser(page);
+  Future<State<List<User>, Failures>> fetchUserGit(int page) async {
+    return _userRepository.getUser(_getUsersRequest(page));
   }
-}
 
-Stream yieldDataSuccess(Success<List<User>> success) async* {
-  yield UserGitLoaded(users: success.data, hasReachMax: false);
-}
-
-Stream yieldDataProgress(InProgress<List<User>> inProgress) async* {
-  yield UserGitLoaded(users: inProgress.data, hasReachMax: false);
-}
-
-Stream yieldDataError(Error<List<User>> error) async* {
-  yield UserGitError();
+  GetUsersRequest _getUsersRequest(int page) {
+    return GetUsersRequest('abc', page: page, limit: 10);
+  }
 }

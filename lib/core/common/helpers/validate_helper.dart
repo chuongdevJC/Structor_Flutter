@@ -1,3 +1,1 @@
-class ValidateHelper {
-    
-}
+class ValidateHelper {}

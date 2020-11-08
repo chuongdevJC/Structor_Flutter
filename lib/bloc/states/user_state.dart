@@ -2,7 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:structure_flutter/data/models/user.dart';
 
 abstract class UserGitState extends Equatable {
-  UserGitState([List props = const []]) : super(props);
+  UserGitState([List props = const []]);
+
+  @override
+  List<Object> get props => [];
 }
 
 class UserGitUnInitialized extends UserGitState {

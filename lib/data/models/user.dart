@@ -20,4 +20,7 @@ class User extends Equatable {
   factory User.copyWithLocal(UserDB userDB) {
     return User(id: userDB.id, name: userDB.name, avatar: userDB.avatar);
   }
+
+  @override
+  List<Object> get props => [];
 }

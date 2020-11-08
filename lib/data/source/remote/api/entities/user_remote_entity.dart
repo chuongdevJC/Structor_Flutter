@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-part '../parser/user_remote_entity.g.dart';
+part 'user_remote_entity.g.dart';
 
 @JsonSerializable()
 class UserGitEntity extends Equatable {
@@ -20,4 +20,7 @@ class UserGitEntity extends Equatable {
 
   @override
   String toString() => 'UserGit { id: $id }';
+
+  @override
+  List<Object> get props => [];
 }
