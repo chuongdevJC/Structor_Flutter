@@ -30,4 +30,8 @@ class UserRepository {
   Future<User> getUser() {
     return _userRemoteDataSource.getUser();
   }
+
+  Future<void> updateUserInfo(String displayName, String photoUrl) {
+    return _userRemoteDataSource.updateUserInfo(displayName, photoUrl);
+  }
 }

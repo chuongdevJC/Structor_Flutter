@@ -5,12 +5,10 @@ import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/widgets/button_widget.dart';
 import 'package:structure_flutter/widgets/snackbar_widget.dart';
-
-import 'file:///G:/Project/chatchit_project/Structure_Flutter/lib/pages/authen/login/widgets/signup_button.dart';
-
 import '../../../../bloc/bloc.dart';
 import '../../../../widgets/form_widget.dart';
 import 'checkbox_form.dart';
+import 'signup_button.dart';
 
 class LoginForm extends StatefulWidget {
   State<LoginForm> createState() => _LoginFormState();

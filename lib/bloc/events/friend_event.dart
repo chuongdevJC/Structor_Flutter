@@ -4,7 +4,7 @@ abstract class FriendEvent extends Equatable {
   FriendEvent([List props = const []]) : super();
 }
 
-class InitializeLoadData extends FriendEvent {
+class InitializeFriendList extends FriendEvent {
   final String message = "InitializeLoadData";
 
   @override
@@ -14,4 +14,22 @@ class InitializeLoadData extends FriendEvent {
 
   @override
   List<Object> get props => [message];
+}
+
+class MakingFriendRequest extends FriendEvent {
+  String currentUserID;
+  String currentUserName;
+  String recipientID;
+  String recipientName;
+
+  MakingFriendRequest(
+    this.currentUserID,
+    this.currentUserName,
+    this.recipientID,
+    this.recipientName,
+  );
+
+  @override
+  List<Object> get props =>
+      [recipientID, recipientName, currentUserID, currentUserName];
 }

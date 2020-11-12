@@ -5,7 +5,7 @@ import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/core/resource/text_style.dart';
 import 'package:structure_flutter/di/injection.dart';
-
+import 'package:structure_flutter/widgets/app_bar_widget.dart';
 import 'widgets/login_form.dart';
 
 class LoginPage extends StatefulWidget {
@@ -24,9 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.white_10,
+      appBar: AppBarWidget(
         title: Row(
           children: [
             AppIcons.chat_blue,
@@ -34,7 +32,9 @@ class _LoginPageState extends State<LoginPage> {
             Text('Chat chit', style: AppStyles.blue_18),
           ],
         ),
-        centerTitle: true,
+        backgroundColor: AppColors.white_10,
+        isCenterTitle: true,
+        elevation: 0,
       ),
       body: BlocProvider<LoginBloc>(
         create: (context) => _loginBloc,

@@ -14,59 +14,68 @@ abstract class UserRemoteDataSource {
   Future<bool> isSignedIn();
 
   Future<User> getUser();
+
+  Future<void> updateUserInfo(String displayName, String photoUrl);
 }
 
 @Singleton(as: UserRemoteDataSource)
 class UserRemoteDataSourceImpl extends UserRemoteDataSource {
-  final FirebaseAuth _firebaseAuth;
-  final GoogleSignIn _googleSignIn;
+  final FirebaseAuth firebaseAuth;
+  final GoogleSignIn googleSignIn;
 
-  UserRemoteDataSourceImpl({
-    FirebaseAuth firebaseAuth,
-    GoogleSignIn googleSignIn,
-  })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+  UserRemoteDataSourceImpl(
+    this.firebaseAuth,
+    this.googleSignIn,
+  );
 
   Future<User> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    await _firebaseAuth.signInWithCredential(credential);
-    return _firebaseAuth.currentUser;
+    await firebaseAuth.signInWithCredential(credential);
+    return firebaseAuth.currentUser;
   }
 
   Future<void> signInWithCredentials(String email, String password) async {
-    return await _firebaseAuth.signInWithEmailAndPassword(
+    return await firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
   }
 
   Future<String> signUp(String email, String password) async {
-    final value = await _firebaseAuth.createUserWithEmailAndPassword(
+    final _auth = await firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
-    return value.user.uid;
+    return _auth.user.uid;
   }
 
   Future<void> signOut() async {
     return Future.wait([
-      _firebaseAuth.signOut(),
-      _googleSignIn.signOut(),
+      firebaseAuth.signOut(),
+      googleSignIn.signOut(),
     ]);
   }
 
   Future<bool> isSignedIn() async {
-    final currentUser = _firebaseAuth.currentUser;
+    final currentUser = firebaseAuth.currentUser;
     return currentUser != null;
   }
 
   Future<User> getUser() async {
-    return _firebaseAuth.currentUser;
+    return firebaseAuth.currentUser;
+  }
+
+  Future<void> updateUserInfo(String displayName, String photoUrl) async {
+    final _user = firebaseAuth.currentUser;
+    return await _user.updateProfile(
+      displayName: displayName,
+      photoURL: photoUrl,
+    );
   }
 }

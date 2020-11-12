@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,6 +43,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       final String uid = await _userRepository.signUp(email, password);
       var result = _storageRepository.uploadUserImage(uid, imageURL);
       var _imageURL = await (await result).ref.getDownloadURL();
+      await _userRepository.updateUserInfo(name, _imageURL);
       await _accountRepository.createUser(uid, name, email, _imageURL);
       yield RegisterState.success();
     } catch (e) {
