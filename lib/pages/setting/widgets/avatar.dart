@@ -1,23 +1,29 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/assets_images.dart';
 
 import '../../../core/resource/text_style.dart';
 
 class Avatar extends StatelessWidget {
-  final User user;
+  final String displayName;
+  final String photoUrl;
 
-  Avatar(this.user);
+  Avatar(this.displayName, this.photoUrl);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CircleAvatar(
-          radius: 40,
-          backgroundImage: NetworkImage(AssetsImage.avatar),
+          radius: 41,
+          backgroundColor: AppColors.red,
+          child: CircleAvatar(
+            radius: 40,
+            backgroundColor: AppColors.double_spanish_white,
+            backgroundImage: NetworkImage(photoUrl),
+          ),
         ),
-        Text(user.email, style: AppStyles.font_25),
+        Text(displayName, style: AppStyles.font_25),
       ],
     );
   }

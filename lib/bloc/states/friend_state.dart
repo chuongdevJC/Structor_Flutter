@@ -30,10 +30,10 @@ class Failure extends FriendState {
 }
 
 class Success extends FriendState {
-  final List<Account> data;
+  final List<Account> accounts;
 
-  Success(this.data);
+  Success(this.accounts);
 
   @override
-  List<Object> get props => [data];
+  List<Object> get props => [accounts];
 }
