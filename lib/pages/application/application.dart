@@ -4,7 +4,6 @@ import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/app_localizations.dart';
 import 'package:structure_flutter/pages/app/app.dart';
 
-// ignore: must_be_immutable
 class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -23,6 +23,10 @@ abstract class FriendRemoteDataSource {
     bool pending,
     bool accept,
   });
+
+  Future<List<FriendRequest>> getListFriendAccount(String currentUserID);
+
+  Future<List<Account>> getAllUserAccountsWithoutMe(String currentUserID);
 }
 
 @Singleton(as: FriendRemoteDataSource)
@@ -74,7 +78,8 @@ class FriendRemoteDataSourceImpl extends FriendRemoteDataSource {
 
   @override
   Future<List<FriendRequest>> getFriendListWithoutMe(
-      String currentUserID) async {
+    String currentUserID,
+  ) async {
     final _snapshot =
         await _userCollection.doc(currentUserID).collection("Friends").get();
     final _friendListAccounts =
@@ -109,5 +114,22 @@ class FriendRemoteDataSourceImpl extends FriendRemoteDataSource {
       "pending": pending,
       "accept": !accept,
     });
+  }
+
+  @override
+  Future<List<FriendRequest>> getListFriendAccount(String currentUserID) async {
+    final _snapshot =
+        await _userCollection.doc(currentUserID).collection("Friends").get();
+    return _snapshot.docs.map((e) => FriendRequest.fromFireStore(e)).toList();
+  }
+
+  @override
+  Future<List<Account>> getAllUserAccountsWithoutMe(
+    String currentUserID,
+  ) async {
+    final _snapshot = await _userCollection.get();
+    final _friendListAccounts = _snapshot.docs.map((e) => Account.fromFireStore(e)).toList();
+    _friendListAccounts.removeWhere((element) => element.id == currentUserID);
+    return _friendListAccounts;
   }
 }

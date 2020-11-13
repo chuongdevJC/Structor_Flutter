@@ -16,6 +16,8 @@ abstract class FriendRepository {
 
   Future<List<Account>> getAllUserAccounts();
 
+  Future<List<Account>> getAllUserAccountsWithoutMe(String currentUserID);
+
   Future<List<FriendRequest>> getFriendListWithoutMe(String currentUserID);
 
   Future<void> updateMakingFriends({
@@ -50,7 +52,7 @@ class FriendRepositoryImpl extends FriendRepository {
   }
 
   @override
-  Future<List<Account>> getAllUserAccounts() {
+  Future<List<Account>> getAllUserAccounts() async {
     return _friendRemoteDataSource.getAllUserAccounts();
   }
 
@@ -72,5 +74,11 @@ class FriendRepositoryImpl extends FriendRepository {
       pending: pending,
       accept: accept,
     );
+  }
+
+  @override
+  Future<List<Account>> getAllUserAccountsWithoutMe(String currentUserID) {
+    return _friendRemoteDataSource.getAllUserAccountsWithoutMe(currentUserID);
+
   }
 }

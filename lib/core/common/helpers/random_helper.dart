@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 @singleton
 class RandomHelper {
-  final Random random;
+  Random random;
 
   RandomHelper(this.random);
 

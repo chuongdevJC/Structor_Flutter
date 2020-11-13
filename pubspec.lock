@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety"
+  avataar_generator:
+    dependency: "direct main"
+    description:
+      name: avataar_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   bloc:
     dependency: transitive
     description:
@@ -225,6 +232,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.6"
+  emoji_pick:
+    dependency: "direct main"
+    description:
+      name: emoji_pick
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   english_words:
     dependency: "direct main"
     description:
@@ -302,13 +316,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
-  firebase_messaging:
-    dependency: "direct main"
-    description:
-      name: firebase_messaging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "7.0.3"
   firebase_storage:
     dependency: "direct main"
     description:

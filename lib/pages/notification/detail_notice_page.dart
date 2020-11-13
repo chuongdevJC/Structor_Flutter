@@ -51,7 +51,6 @@ class _DetailNoticePageState extends State<DetailNoticePage> {
       appBar: AppBarWidget(
         isCenterTitle: true,
         elevation: 0,
-        backgroundColor: AppColors.outer_space,
         title: Row(
           children: [
             AppIcons.notification_important,

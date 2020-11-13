@@ -5,6 +5,7 @@ import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/pages/friend_list/friend_list_page.dart';
 import 'package:structure_flutter/pages/notification/detail_notice_page.dart';
+import 'package:structure_flutter/pages/recent_conversation/recent_conversation.dart';
 import 'package:structure_flutter/pages/setting/setting_page.dart';
 
 import '../../core/resource/icon_style.dart';
@@ -25,7 +26,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
 
   static final _tabBarItems = <Tab>[
     Tab(icon: AppIcons.chat_blue),
-    Tab(icon: AppIcons.call_blue),
+    Tab(icon: AppIcons.people),
     Tab(icon: AppIcons.notifications_blue),
     Tab(icon: AppIcons.setting_blue),
   ];
@@ -61,13 +62,25 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
     return TabBarView(
       controller: _tabController,
       children: <Widget>[
-        Text('Recent conversation page !'),
-        FriendListPage(user.uid, user.displayName),
+        RecentConversationScreen(
+          user.uid,
+          user.displayName,
+          user.email,
+          user.photoURL,
+        ),
+        FriendListPage(
+          currentUid: user.uid,
+          currentUserName: user.displayName,
+          currentUserImage: user.photoURL,
+        ),
         DetailNoticePage(
           currentUserID: user.uid,
           currentUserName: user.displayName,
         ),
-        SettingPage(user.displayName, user.photoURL),
+        SettingPage(
+          user.displayName,
+          user.photoURL,
+        ),
       ],
     );
   }

@@ -11,6 +11,8 @@ abstract class AccountRemoteDataSource {
   );
 
   Future<List<Account>> getUsersByName(String searchName);
+
+  Future<List<Account>> getListFriendAccount();
 }
 
 @Singleton(as: AccountRemoteDataSource)
@@ -42,6 +44,12 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         .where("name", isGreaterThanOrEqualTo: searchName)
         .where("name", isLessThan: searchName + 'z');
     final _snapshot = await _userRef.get();
+    return _snapshot.docs.map((doc) => Account.fromFireStore(doc)).toList();
+  }
+
+  @override
+  Future<List<Account>> getListFriendAccount() async {
+    final _snapshot = await _userCollection.get();
     return _snapshot.docs.map((doc) => Account.fromFireStore(doc)).toList();
   }
 }

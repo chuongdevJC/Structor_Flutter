@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
-import 'package:structure_flutter/core/resource/assets_images.dart';
-
 import '../../../core/resource/text_style.dart';
 
 class Avatar extends StatelessWidget {

@@ -32,7 +32,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
 
-
   @override
   void dispose() {
     _registerBloc.close();
@@ -60,8 +59,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         if (state.isSuccess) {
           _snackBar.success('Register successful !');
           Timer(Duration(seconds: 2), () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginPage()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => LoginPage()));
           });
         }
       },
