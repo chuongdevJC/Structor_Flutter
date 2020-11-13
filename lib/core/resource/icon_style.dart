@@ -6,12 +6,34 @@ import 'app_colors.dart';
 class AppIcons {
   //color icons
   static const arrowBack = Icon(Icons.arrow_back);
-  static const camera = Icon(Icons.camera_enhance);
+  static const camera = Icon(
+    Icons.camera_enhance,
+    color: AppColors.blue,
+  );
   static const dashboard = Icon(Icons.dashboard);
   static const security = Icon(Icons.security);
+  static const search = Icon(Icons.search,color: Colors.blue,);
+  static const add_photo_alternate_outlined = Icon(
+    Icons.add_photo_alternate_outlined,
+    color: AppColors.blue,
+  );
+  static const widgets_blue = Icon(
+    Icons.widgets,
+    color: AppColors.blue,
+  );
+  static const menu = Icon(Icons.menu);
+  static const people = Icon(
+    Icons.people,
+    color: Colors.blue,
+  );
+
+  static const add = Icon(
+    Icons.add,
+    color: Colors.black,
+    size: 30,
+  );
 
   static const notification_important = Icon(Icons.notification_important);
-  static const menu = Icon(Icons.menu);
   static const account_box_rounded = Icon(
     Icons.account_box_rounded,
     color: Colors.white,
@@ -48,4 +70,13 @@ class AppIcons {
   static const arrowBack_white = Icon(Icons.arrow_back, color: Colors.white);
   static const arrowBackIos_black =
       Icon(Icons.arrow_back_ios, color: AppColors.black);
+
+  static const List<String> tabsname = ["Face", "Fruits", "Fruits", "Asif"];
+  static const List<dynamic> tabsemoji = [
+    ["☕", "❤", "☕", "☕", "☕", "❤"],
+    ["☕", "❤", "☕", "☕", "☕", "❤", "☕", "❤", "☕", "☕", "☕", "❤"],
+    ["☕", "❤", "☕", "☕", "☕", "❤", "☕", "❤", "☕", "☕", "☕", "❤",
+      "☕", "❤", "☕", "☕", "☕", "❤", "☕", "❤", "☕", "☕", "☕", "❤"
+    ]
+  ];
 }

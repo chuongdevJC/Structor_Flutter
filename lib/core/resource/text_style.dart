@@ -7,7 +7,7 @@ class AppStyles {
   static const font_25 = TextStyle(fontSize: 25);
 
   //White styles
-  static const white = TextStyle(color: Colors.white);
+  static const white = TextStyle(color: Colors.white,fontSize: 15);
   static const white_16 = TextStyle(color: Colors.white, fontSize: 16.0);
   static const white_15 = TextStyle(color: Colors.white, fontSize: 15.0);
   static const white_10 = TextStyle(color: Colors.white, fontSize: 10.0);

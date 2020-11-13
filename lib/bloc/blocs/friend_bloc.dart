@@ -11,7 +11,9 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
   @override
   Stream<FriendState> mapEventToState(FriendEvent event) async* {
     if (event is InitializeFriendList) {
-      yield* _mapLoadDataToState();
+      yield* _mapLoadDataToState(
+        event.currentUserID,
+      );
     }
     if (event is MakingFriendRequest) {
       yield* _mapSendFriendRequestToState(
@@ -23,10 +25,13 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
     }
   }
 
-  Stream<FriendState> _mapLoadDataToState() async* {
+  Stream<FriendState> _mapLoadDataToState(
+    String currentUserID,
+  ) async* {
     yield LoadingData();
     try {
-      final _accounts = await _friendRepository.getAllUserAccounts();
+      final _accounts =
+          await _friendRepository.getAllUserAccountsWithoutMe(currentUserID);
       yield Success(_accounts);
     } catch (_) {
       yield Failure();

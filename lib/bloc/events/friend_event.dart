@@ -6,6 +6,9 @@ abstract class FriendEvent extends Equatable {
 
 class InitializeFriendList extends FriendEvent {
   final String message = "InitializeLoadData";
+  String currentUserID;
+
+  InitializeFriendList(this.currentUserID);
 
   @override
   String toString() {
@@ -13,7 +16,7 @@ class InitializeFriendList extends FriendEvent {
   }
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message, currentUserID];
 }
 
 class MakingFriendRequest extends FriendEvent {
@@ -32,4 +35,16 @@ class MakingFriendRequest extends FriendEvent {
   @override
   List<Object> get props =>
       [recipientID, recipientName, currentUserID, currentUserName];
+}
+
+class SendRequest extends FriendEvent {
+  final String message = "InitializeLoadData";
+
+  @override
+  String toString() {
+    return message;
+  }
+
+  @override
+  List<Object> get props => [message];
 }

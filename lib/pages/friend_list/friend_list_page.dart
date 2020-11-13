@@ -1,12 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:english_words/english_words.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/common/helpers/random_helper.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
+import 'package:structure_flutter/core/resource/assets_images.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/data/entities/account.dart';
-import 'package:structure_flutter/data/source/remote/friend_remote_datasource.dart';
+import 'package:structure_flutter/data/entities/message.dart';
 import 'package:structure_flutter/di/injection.dart';
+import 'package:structure_flutter/pages/recent_conversation/widgets/search_bar.dart';
+import 'package:structure_flutter/repositories/account_repository.dart';
+import 'package:structure_flutter/repositories/conversation_repository.dart';
+import 'package:structure_flutter/repositories/friend_repository.dart';
 import 'package:structure_flutter/widgets/app_bar_widget.dart';
 import 'package:structure_flutter/widgets/loading_widget.dart';
 import 'package:structure_flutter/widgets/snackbar_widget.dart';
@@ -16,17 +24,23 @@ import 'widgets/friend_profile.dart';
 class FriendListPage extends StatefulWidget {
   String currentUid;
   String currentUserName;
+  String currentUserImage;
 
-  FriendListPage(this.currentUid, this.currentUserName);
+  FriendListPage(
+      {this.currentUid, this.currentUserName, this.currentUserImage});
 
   @override
   _MessageState createState() => _MessageState();
 }
 
 class _MessageState extends State<FriendListPage> {
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+
   final _snackBar = getIt<SnackBarWidget>();
 
   final _friendBloc = getIt<FriendBloc>();
+
+  final _conversationBloc = getIt<ConversationBloc>();
 
   final _random = getIt<RandomHelper>();
 
@@ -38,23 +52,44 @@ class _MessageState extends State<FriendListPage> {
 
   @override
   void initState() {
-    _friendBloc.add(InitializeFriendList());
+    _friendBloc.add(InitializeFriendList(
+      widget.currentUid,
+    ));
     super.initState();
   }
+
+  Icon cusIcon = Icon(Icons.search);
+  Widget cusSearchBar = Text('Home');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
         elevation: 0,
-        backgroundColor: AppColors.outer_space,
+        title: cusSearchBar,
         leading: AppIcons.account_box_rounded,
         actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {},
-            ),
-          ],
+          IconButton(
+            icon: cusIcon,
+            onPressed: () {
+              setState(() {
+                if (this.cusIcon.icon == Icons.search) {
+                  this.cusIcon = Icon(Icons.cancel);
+                  this.cusSearchBar = SearchBar(
+                    onTextChanged: (searchText) {
+                      setState(() {
+                        _onSearchByNameOrEmail(searchText);
+                      });
+                    },
+                  );
+                } else {
+                  this.cusIcon = Icon(Icons.search);
+                  this.cusSearchBar = Text('Home');
+                }
+              });
+            },
+          ),
+        ],
       ),
       body: BlocListener(
         cubit: _friendBloc,
@@ -117,27 +152,36 @@ class _MessageState extends State<FriendListPage> {
       followers: _random.followers(),
       colors: _random.colors(),
       feed: _random.feed(),
-      onPressed: () => _onSendRequestPressed(
+      onPressed: () => _onPressed(
         recipient.id,
         recipient.name,
-        widget.currentUid,
-        widget.currentUserName,
+        recipient.image,
       ),
       isActiveButton: true,
     );
   }
 
-  void _onSendRequestPressed(
+  void _onPressed(
     String recipientID,
     String recipientName,
-    String currentUserID,
-    String currentUserName,
+    String recipientImage,
   ) {
-    _friendBloc.add(MakingFriendRequest(
-      currentUserID,
-      currentUserName,
-      recipientID,
-      recipientName,
+    _conversationBloc.add(SendMakingFriendRequest(
+      currentID: widget.currentUid,
+      recipientID: recipientID,
+      currentUserName: widget.currentUserName,
+      currentUserImage: widget.currentUserImage,
+      recipientName: recipientName,
+      recipientImage: recipientImage,
+      type: MessageType.Text,
+      unseenCount: 12,
+    ));
+  }
+
+  void _onSearchByNameOrEmail(String textChange) {
+    _conversationBloc.add(SearchByNameOrEmail(
+      name: textChange,
+      recipientID: widget.currentUid,
     ));
   }
 }

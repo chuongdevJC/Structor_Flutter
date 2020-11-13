@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/bloc/events/register_event.dart';
 import 'package:structure_flutter/bloc/states/register_state.dart';
 import 'package:structure_flutter/di/injection.dart';
@@ -46,7 +47,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       await _userRepository.updateUserInfo(name, _imageURL);
       await _accountRepository.createUser(uid, name, email, _imageURL);
       yield RegisterState.success();
-    } catch (e) {
+    } catch (_) {
       yield RegisterState.failure();
     }
   }

@@ -3,6 +3,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 abstract class StorageRemoteDataSource {
   Future<StorageTaskSnapshot> uploadUserImage(String uid, File image);
+
+  Future<String> getDownloadURL();
 }
 
 class StorageRemoteDataSourceImpl extends StorageRemoteDataSource {
@@ -21,5 +23,15 @@ class StorageRemoteDataSourceImpl extends StorageRemoteDataSource {
           .putFile(image)
           .onComplete;
     } catch (_) {}
+  }
+
+  @override
+  Future<String> getDownloadURL() {
+    try {
+      final _firebaseStorage = _baseRef.child(_profileImages);
+      return _firebaseStorage.getDownloadURL();
+    } catch (_) {
+      return null;
+    }
   }
 }
