@@ -22,8 +22,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
 
   final _friendRepository = getIt<FriendRepository>();
 
-  final _accountRepository = getIt<AccountRepository>();
-
   @override
   Stream<ConversationState> mapEventToState(ConversationEvent event) async* {
     if (event is InitRecentConversation) {
@@ -65,8 +63,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
     yield LoadingConversation();
     try {
       final _currentUser = await _userRepository.getUser();
-      final _lastConversation = await _conversationRepository
-          .getLastConversations(_currentUser.uid);
+      final _lastConversation =
+          await _conversationRepository.getLastConversations(_currentUser.uid);
       yield SuccessConversation(lastConversation: _lastConversation);
     } catch (_) {
       yield FailureConversation();
@@ -154,9 +152,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
         timestamp: timestamp,
         type: type,
       );
-
       await _conversationRepository.sendMessage(conversationID, _message);
-
       final _currentUser =
           await _conversationRepository.getConversations(conversationID);
       yield SuccessConversation(conversation: _currentUser);

@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
-
 import '../../di/injection.dart';
 import '../../repositories/user_repository.dart';
 import '../bloc.dart';
@@ -17,7 +15,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginWithGoogle) {
       yield* _mapLoginWithGooglePressedToState();
-    } else if (event is LoginWithCredentials) {
+    }
+    if (event is LoginWithCredentials) {
       yield* _mapLoginWithCredentialsPressedToState(
         email: event.email.trim(),
         password: event.password.trim(),
@@ -27,8 +26,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Stream<LoginState> _mapLoginWithGooglePressedToState() async* {
     try {
-      await _userRepository.signInWithGoogle();
-      yield LoginState.success();
+      final _user = await _userRepository.signInWithGoogle();
+      yield LoginState.success(_user);
     } catch (_) {
       yield LoginState.failure();
     }
@@ -40,8 +39,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }) async* {
     yield LoginState.loading();
     try {
-      await _userRepository.signInWithCredentials(email, password);
-      yield LoginState.success();
+      final isSignedIn = await _userRepository.isSignedIn();
+      if (isSignedIn) {
+        final name = await _userRepository.getUser();
+        yield LoginState.success(name);
+      } else {
+        final _user =
+            await _userRepository.signInWithCredentials(email, password);
+        yield LoginState.success(_user);
+      }
     } catch (_) {
       yield LoginState.failure();
     }

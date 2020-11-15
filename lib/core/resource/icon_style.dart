@@ -12,7 +12,10 @@ class AppIcons {
   );
   static const dashboard = Icon(Icons.dashboard);
   static const security = Icon(Icons.security);
-  static const search = Icon(Icons.search,color: Colors.blue,);
+  static const search_blue = Icon(
+    Icons.search,
+    color: Colors.blue,
+  );
   static const add_photo_alternate_outlined = Icon(
     Icons.add_photo_alternate_outlined,
     color: AppColors.blue,
@@ -22,6 +25,13 @@ class AppIcons {
     color: AppColors.blue,
   );
   static const menu = Icon(Icons.menu);
+
+  static const search = Icon(Icons.search);
+
+  static const more_vert = Icon(Icons.more_vert);
+
+  static const cancel = Icon(Icons.cancel);
+
   static const people = Icon(
     Icons.people,
     color: Colors.blue,
@@ -51,8 +61,8 @@ class AppIcons {
   static const call_blue = Icon(Icons.call, color: Colors.blue);
   static const notifications_blue =
       Icon(Icons.notifications, color: Colors.blue);
-  static const search_blue = Icon(Icons.search, color: Colors.blue);
   static const setting_blue = Icon(Icons.settings, color: Colors.blue);
+  static const setting_white = Icon(Icons.settings, color: Colors.white);
   static const assignment_blue = Icon(Icons.assignment, color: Colors.blue);
 
   static const account_balance_wallet_blue = Icon(
@@ -75,8 +85,8 @@ class AppIcons {
   static const List<dynamic> tabsemoji = [
     ["☕", "❤", "☕", "☕", "☕", "❤"],
     ["☕", "❤", "☕", "☕", "☕", "❤", "☕", "❤", "☕", "☕", "☕", "❤"],
-    ["☕", "❤", "☕", "☕", "☕", "❤", "☕", "❤", "☕", "☕", "☕", "❤",
-      "☕", "❤", "☕", "☕", "☕", "❤", "☕", "❤", "☕", "☕", "☕", "❤"
+    ["☕", "❤", "☕", "☕", "☕", "❤", "☕", "❤", "☕", "☕", "☕", "❤", "☕",
+      "❤", "☕", "☕", "☕", "❤", "☕", "❤", "☕", "☕", "☕", "❤"
     ]
   ];
 }

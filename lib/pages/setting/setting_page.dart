@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
+import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/core/resource/text_style.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/widgets/app_bar_widget.dart';
@@ -33,6 +34,7 @@ class _SettingState extends State<SettingPage> {
     return Scaffold(
       appBar: AppBarWidget(
         elevation: 0,
+        leading: AppIcons.setting_white,
         title: Text(
           'Cài đặt',
           style: AppStyles.white,

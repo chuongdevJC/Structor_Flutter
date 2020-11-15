@@ -51,9 +51,10 @@ class _DetailNoticePageState extends State<DetailNoticePage> {
       appBar: AppBarWidget(
         isCenterTitle: true,
         elevation: 0,
+        leading: AppIcons.notification_important,
         title: Row(
           children: [
-            AppIcons.notification_important,
+            // AppIcons.notification_important,
             SizedBox(width: 10),
             Text('Thông báo', style: AppStyles.white),
           ],

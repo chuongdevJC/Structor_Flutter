@@ -50,6 +50,8 @@ class _MessageState extends State<FriendListPage> {
     super.dispose();
   }
 
+  bool isSelectedSearchBar = false;
+
   @override
   void initState() {
     _friendBloc.add(InitializeFriendList(
@@ -58,34 +60,27 @@ class _MessageState extends State<FriendListPage> {
     super.initState();
   }
 
-  Icon cusIcon = Icon(Icons.search);
-  Widget cusSearchBar = Text('Home');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarWidget(
         elevation: 0,
-        title: cusSearchBar,
+        title: isSelectedSearchBar
+            ? SearchBar(
+                onTextChanged: (searchText) {
+                  setState(() {
+                    _onSearchByNameOrEmail(searchText);
+                  });
+                },
+              )
+            : Text(''),
         leading: AppIcons.account_box_rounded,
         actions: <Widget>[
           IconButton(
-            icon: cusIcon,
+            icon: isSelectedSearchBar ? AppIcons.cancel : AppIcons.search,
             onPressed: () {
               setState(() {
-                if (this.cusIcon.icon == Icons.search) {
-                  this.cusIcon = Icon(Icons.cancel);
-                  this.cusSearchBar = SearchBar(
-                    onTextChanged: (searchText) {
-                      setState(() {
-                        _onSearchByNameOrEmail(searchText);
-                      });
-                    },
-                  );
-                } else {
-                  this.cusIcon = Icon(Icons.search);
-                  this.cusSearchBar = Text('Home');
-                }
+                isSelectedSearchBar = !isSelectedSearchBar;
               });
             },
           ),

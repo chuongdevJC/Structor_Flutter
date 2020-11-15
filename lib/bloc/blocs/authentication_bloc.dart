@@ -15,7 +15,8 @@ class AuthenticationBloc
   AuthenticationBloc(AuthenticationState initialState) : super(initialState);
 
   @override
-  Stream<AuthenticationState> mapEventToState(AuthenticationEvent event,
+  Stream<AuthenticationState> mapEventToState(
+    AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
       yield* _mapAppStartedToState();
@@ -41,12 +42,16 @@ class AuthenticationBloc
   }
 
   Stream<AuthenticationState> _mapLoggedInToState() async* {
-    final name = await _userRepository.getUser();
-    yield Authenticated(name);
+    try {
+      final name = await _userRepository.getUser();
+      yield Authenticated(name);
+    } catch (_) {}
   }
 
   Stream<AuthenticationState> _mapLoggedOutToState() async* {
-    _userRepository.signOut();
-    yield Unauthenticated();
+    try {
+      _userRepository.signOut();
+      yield Unauthenticated();
+    } catch (_) {}
   }
 }

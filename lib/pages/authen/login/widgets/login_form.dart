@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/di/injection.dart';
+import 'package:structure_flutter/pages/home/home_page.dart';
 import 'package:structure_flutter/widgets/button_widget.dart';
 import 'package:structure_flutter/widgets/snackbar_widget.dart';
 import '../../../../bloc/bloc.dart';
@@ -17,6 +20,7 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final _loginBloc = getIt<LoginBloc>();
   final _snackBar = getIt<SnackBarWidget>();
+  final _authenticationBloc = getIt<AuthenticationBloc>();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -44,7 +48,15 @@ class _LoginFormState extends State<LoginForm> {
           _snackBar.loading('Logging in...');
         }
         if (state.isSuccess) {
-          BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
+          Timer(Duration(seconds: 1), () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => HomePage(
+                          user: state.user,
+                        )));
+          });
+          _snackBar.success('Login successful !');
         }
       },
       child: BlocBuilder(

@@ -11,7 +11,7 @@ class UserRepository {
     return _userRemoteDataSource.signInWithGoogle();
   }
 
-  Future<void> signInWithCredentials(String email, String password) {
+  Future<User> signInWithCredentials(String email, String password) {
     return _userRemoteDataSource.signInWithCredentials(email, password);
   }
 
