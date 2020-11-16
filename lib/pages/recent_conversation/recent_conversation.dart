@@ -43,17 +43,16 @@ class _MessageState extends State<RecentConversationScreen> {
 
   String get currentUid => widget.currentUid;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  List<ConversationSnippet> filteredUsers = List();
+
+  bool isSelectedSearchBar = false;
   @override
   void initState() {
     super.initState();
     _conversationBloc.add(InitRecentConversation());
   }
-
-  List<ConversationSnippet> filteredUsers = List();
-
-  bool isSelectedSearchBar = false;
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +103,6 @@ class _MessageState extends State<RecentConversationScreen> {
           if (state is FailureConversation) {
             _snackBar.failure("Something went wrong!");
           }
-          if (state is SuccessConversation) {}
         },
         child: BlocBuilder(
           cubit: _conversationBloc,

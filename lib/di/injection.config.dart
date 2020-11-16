@@ -13,6 +13,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/bloc/blocs/friend_bloc.dart';
+import 'package:structure_flutter/bloc/blocs/realtime_conversation_bloc.dart';
 import 'package:structure_flutter/core/common/constants/app_constant.dart';
 import 'package:structure_flutter/core/common/helpers/random_helper.dart';
 import 'package:structure_flutter/core/utils/date_time_utils.dart';
@@ -77,6 +78,7 @@ GetIt $initGetIt(
   gh.factory<ConversationBloc>(() => ConversationBloc(InitialConversation()));
   gh.factory<FriendBloc>(() => FriendBloc(LoadingData()));
   gh.factory<NotificationBloc>(() => NotificationBloc(InitializeNotificationState()));
+  gh.factory<RealtimeConversationBloc>(() => RealtimeConversationBloc(InitialConversation()));
 
   return get;
 }

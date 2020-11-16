@@ -34,7 +34,7 @@ abstract class ConversationRepository {
 
   Future<List<ConversationSnippet>> getLastConversations(String userID);
 
-  Future<Conversation> getConversations(String conversationID);
+  Stream<Conversation> getConversations(String conversationID);
 
   Future<List<ConversationSnippet>> getLastConversationByName(
     String searchName,
@@ -108,12 +108,16 @@ class ConversationRepositoryImpl extends ConversationRepository {
   }
 
   @override
-  Future<Conversation> getConversations(String conversationID) {
+  Stream<Conversation> getConversations(String conversationID) {
     return _conversationRemoteDataSource.getConversations(conversationID);
   }
 
   @override
-  Future<List<ConversationSnippet>> getLastConversationByName(String searchName, String recipientID) {
-    return _conversationRemoteDataSource.getLastConversationByName(searchName,recipientID);
+  Future<List<ConversationSnippet>> getLastConversationByName(
+    String searchName,
+    String recipientID,
+  ) {
+    return _conversationRemoteDataSource.getLastConversationByName(
+        searchName, recipientID);
   }
 }

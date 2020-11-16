@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:injectable/injectable.dart';
 import 'package:structure_flutter/data/entities/conversation.dart';
@@ -38,7 +39,7 @@ abstract class ConversationRemoteDataSource {
     String recipientID,
   );
 
-  Future<Conversation> getConversations(String userID);
+  Stream<Conversation> getConversations(String userID);
 }
 
 @Singleton(as: ConversationRemoteDataSource)
@@ -162,14 +163,15 @@ class ConversationRemoteDataSourceImpl extends ConversationRemoteDataSource {
   }
 
   @override
-  Future<Conversation> getConversations(String conversationID) async {
+  Stream<Conversation> getConversations(String conversationID) async* {
     try {
-      final _docsSnapshot =
-          await _conversationCollection.doc(conversationID).get();
-      return Conversation.fromFireStore(_docsSnapshot);
-      ;
+      Stream<DocumentSnapshot> _docsSnapshot =
+          _conversationCollection.doc(conversationID).snapshots();
+      await for (DocumentSnapshot event in _docsSnapshot) {
+        yield Conversation.fromFireStore(event);
+      }
     } catch (_) {
-      return null;
+      yield null;
     }
   }
 
@@ -178,12 +180,10 @@ class ConversationRemoteDataSourceImpl extends ConversationRemoteDataSource {
     String searchName,
     String recipientID,
   ) async {
-    final _lastConversation = await _userCollection
+    final _lastConversation = _userCollection
         .doc(recipientID)
         .collection("Conversations")
-        .where("name", isLessThanOrEqualTo: searchName)
-        .limit(10);
-
+        .where("name", isLessThanOrEqualTo: searchName);
     final _snapshot = await _lastConversation.get();
     return _snapshot.docs
         .map((doc) => ConversationSnippet.fromFireStore(doc))
