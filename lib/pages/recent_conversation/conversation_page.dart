@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
-import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/core/resource/text_style.dart';
 import 'package:structure_flutter/core/utils/media_utils.dart';
@@ -200,7 +199,7 @@ class _ConversationPageState extends State<ConversationPage> {
             Expanded(
               child: Align(
                 alignment: Alignment.center,
-                child: Text("Let's start a conversation!"),
+                child: Text("Let's start a conversation!",style: AppStyles.black_24,),
               ),
             ),
             BottomIcon(
@@ -232,6 +231,7 @@ class _ConversationPageState extends State<ConversationPage> {
                     emojiHeight = 0.0;
                   });
                 }
+                isMessageTextType = true;
               },
               textFieldController: textFieldController,
             ),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -7,6 +8,7 @@ class LoginState {
   final bool isSubmitting;
   final bool isSuccess;
   final bool isFailure;
+  final User user;
 
   bool get isFormValid => isEmailValid && isPasswordValid;
 
@@ -16,6 +18,7 @@ class LoginState {
     @required this.isSubmitting,
     @required this.isSuccess,
     @required this.isFailure,
+    @required this.user,
   });
 
   factory LoginState.empty() {
@@ -25,6 +28,7 @@ class LoginState {
       isSubmitting: false,
       isSuccess: false,
       isFailure: false,
+      user: null,
     );
   }
 
@@ -48,13 +52,14 @@ class LoginState {
     );
   }
 
-  factory LoginState.success() {
+  factory LoginState.success(User user) {
     return LoginState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
       isSuccess: true,
       isFailure: false,
+      user: user,
     );
   }
 

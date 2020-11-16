@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 abstract class UserRemoteDataSource {
   Future<User> signInWithGoogle();
 
-  Future<void> signInWithCredentials(String email, String password);
+  Future<User> signInWithCredentials(String email, String password);
 
   Future<String> signUp(String email, String password);
 
@@ -40,11 +40,12 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
     return firebaseAuth.currentUser;
   }
 
-  Future<void> signInWithCredentials(String email, String password) async {
-    return await firebaseAuth.signInWithEmailAndPassword(
+  Future<User> signInWithCredentials(String email, String password) async {
+    final _userCredential = await firebaseAuth.signInWithEmailAndPassword(
       email: email,
       password: password,
     );
+    return _userCredential.user;
   }
 
   Future<String> signUp(String email, String password) async {
@@ -58,6 +59,7 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   Future<void> signOut() async {
     return Future.wait([
       firebaseAuth.signOut(),
+      googleSignIn.disconnect(),
       googleSignIn.signOut(),
     ]);
   }

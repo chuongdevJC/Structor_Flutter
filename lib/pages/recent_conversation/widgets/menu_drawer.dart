@@ -4,6 +4,7 @@ import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/core/resource/text_style.dart';
 import 'package:structure_flutter/di/injection.dart';
+import 'package:structure_flutter/pages/authen/login/login_page.dart';
 import 'package:structure_flutter/pages/friend_list/friend_list_page.dart';
 
 class NavMenuDrawer extends StatefulWidget {
@@ -84,7 +85,9 @@ class _NavMenuDrawerState extends State<NavMenuDrawer> {
                 leading: Icon(Icons.exit_to_app),
                 title: Text('Đăng xuất'),
                 onTap: () {
-                  _authenticationBloc.add(LoggedOut());
+                  // _authenticationBloc.add(LoggedOut());
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
                 },
               ),
             ],

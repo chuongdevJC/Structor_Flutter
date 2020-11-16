@@ -70,10 +70,9 @@ GetIt $initGetIt(
   gh.singleton<RandomHelper>(RandomHelper(Random()));
   gh.singleton<SnackBarWidget>(SnackBarWidget());
 
-  gh.singleton<AuthenticationBloc>(AuthenticationBloc(Uninitialized()));
-
   //Bloc
   gh.factory<LoginBloc>(() => LoginBloc(LoginState.empty()));
+  gh.factory<AuthenticationBloc>(() => AuthenticationBloc(Uninitialized()));
   gh.factory<RegisterBloc>(() => RegisterBloc(RegisterState.empty()));
   gh.factory<ConversationBloc>(() => ConversationBloc(InitialConversation()));
   gh.factory<FriendBloc>(() => FriendBloc(LoadingData()));

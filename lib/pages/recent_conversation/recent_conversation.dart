@@ -51,9 +51,9 @@ class _MessageState extends State<RecentConversationScreen> {
     _conversationBloc.add(InitRecentConversation());
   }
 
-  Icon cusIcon = Icon(Icons.search);
-  Widget cusSearchBar = Text('Home');
   List<ConversationSnippet> filteredUsers = List();
+
+  bool isSelectedSearchBar = false;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,15 @@ class _MessageState extends State<RecentConversationScreen> {
         ),
       ),
       appBar: AppBar(
-        title: cusSearchBar,
+        title: isSelectedSearchBar
+            ? SearchBar(
+                onTextChanged: (searchText) {
+                  setState(() {
+                    _onSearchByNameOrEmail(searchText);
+                  });
+                },
+              )
+            : Text('Home'),
         elevation: 0,
         leading: IconButton(
           icon: AppIcons.menu,
@@ -76,26 +84,14 @@ class _MessageState extends State<RecentConversationScreen> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: cusIcon,
+            icon: isSelectedSearchBar ? AppIcons.cancel : AppIcons.search,
             onPressed: () {
               setState(() {
-                if (this.cusIcon.icon == Icons.search) {
-                  this.cusIcon = Icon(Icons.cancel);
-                  this.cusSearchBar = SearchBar(
-                    onTextChanged: (searchText) {
-                      setState(() {
-                        _onSearchByNameOrEmail(searchText);
-                      });
-                    },
-                  );
-                } else {
-                  this.cusIcon = Icon(Icons.search);
-                  this.cusSearchBar = Text('Home');
-                }
+                isSelectedSearchBar = !isSelectedSearchBar;
               });
             },
           ),
-          IconButton(icon: Icon(Icons.more_vert), onPressed: () {})
+          IconButton(icon: AppIcons.more_vert, onPressed: () {})
         ],
       ),
       body: BlocListener(
