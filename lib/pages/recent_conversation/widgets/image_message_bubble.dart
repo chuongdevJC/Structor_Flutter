@@ -17,8 +17,8 @@ class ImageMessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Color> _colorScheme = isOwnMessage
-        ? [AppColors.blue, AppColors.blue]
-        : [AppColors.blue, AppColors.blue];
+        ? [AppColors.elm, AppColors.elm]
+        : [AppColors.double_spanish_white, AppColors.double_spanish_white];
     DecorationImage _image = DecorationImage(image: NetworkImage(imageURL), fit: BoxFit.cover);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),

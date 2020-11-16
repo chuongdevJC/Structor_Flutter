@@ -27,9 +27,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
     if (event is InitRecentConversation) {
       yield* _mapRecentConversationToState();
     }
-    if (event is InitConversation) {
-      yield* _mapConversationToState(event.conversationID);
-    }
     if (event is SearchByNameOrEmail) {
       yield* _mapSearchByNameOrEmailToState(
         event.name,
@@ -120,19 +117,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
     }
   }
 
-  Stream<ConversationState> _mapConversationToState(
-    String conversationID,
-  ) async* {
-    yield LoadingConversation();
-    try {
-      final _currentUser =
-          await _conversationRepository.getConversations(conversationID);
-      yield SuccessConversation(conversation: _currentUser);
-    } catch (_) {
-      yield FailureConversation();
-    }
-  }
-
   Stream<ConversationState> _mapSendMessageToState(
     String senderID,
     String conversationID,
@@ -153,9 +137,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
         type: type,
       );
       await _conversationRepository.sendMessage(conversationID, _message);
-      final _currentUser =
-          await _conversationRepository.getConversations(conversationID);
-      yield SuccessConversation(conversation: _currentUser);
     } catch (_) {
       yield FailureConversation();
     }

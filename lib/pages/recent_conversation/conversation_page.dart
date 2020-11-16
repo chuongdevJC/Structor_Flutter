@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
+import 'package:structure_flutter/bloc/blocs/realtime_conversation_bloc.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/core/resource/text_style.dart';
 import 'package:structure_flutter/core/utils/media_utils.dart';
@@ -49,9 +50,9 @@ class _ConversationPageState extends State<ConversationPage> {
 
   final _conversationBloc = getIt<ConversationBloc>();
 
-  ScrollController _listViewController = ScrollController();
+  final _realtimeConversationBloc = getIt<RealtimeConversationBloc>();
 
-  final TextEditingController _textEditingController = TextEditingController();
+  ScrollController _listViewController = ScrollController();
 
   File _image;
 
@@ -72,7 +73,7 @@ class _ConversationPageState extends State<ConversationPage> {
 
   @override
   void initState() {
-    _conversationBloc.add(InitConversation(
+    _realtimeConversationBloc.add(InitConversation(
       conversationID: widget.conversationID,
     ));
 
@@ -103,32 +104,41 @@ class _ConversationPageState extends State<ConversationPage> {
   }
 
   Widget _conversationUI() {
-    return BlocListener(
-      cubit: _conversationBloc,
-      listener: (BuildContext context, ConversationState state) {
-        _snackBar.buildContext = context;
-        if (state is LoadingConversation) {
-          return Loading();
-        }
-        if (state is FailureConversation) {
-          _snackBar.failure("Something went wrong!");
-        }
-        if (state is SuccessConversation) {}
-      },
-      child: BlocBuilder(
-        cubit: _conversationBloc,
-        builder: (BuildContext context, ConversationState state) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ConversationBloc>(
+          create: (BuildContext context) => _conversationBloc,
+        ),
+        BlocProvider<RealtimeConversationBloc>(
+          create: (BuildContext context) => _realtimeConversationBloc,
+        )
+      ],
+      child: BlocListener(
+        cubit: _realtimeConversationBloc,
+        listener: (BuildContext context, ConversationState state) {
+          _snackBar.buildContext = context;
           if (state is LoadingConversation) {
-            Loading();
-          }
-          if (state is SuccessConversation) {
-            return _conversationPageUI(context, state.conversation);
+            return Loading();
           }
           if (state is FailureConversation) {
-            Loading();
+            _snackBar.failure("Something went wrong!");
           }
-          return Loading();
         },
+        child: BlocBuilder(
+          cubit: _realtimeConversationBloc,
+          builder: (BuildContext context, ConversationState state) {
+            if (state is LoadingConversation) {
+              Loading();
+            }
+            if (state is SuccessConversation) {
+              return _conversationPageUI(context, state.conversation);
+            }
+            if (state is FailureConversation) {
+              Loading();
+            }
+            return Loading();
+          },
+        ),
       ),
     );
   }
@@ -199,7 +209,9 @@ class _ConversationPageState extends State<ConversationPage> {
             Expanded(
               child: Align(
                 alignment: Alignment.center,
-                child: Text("Let's start a conversation!",style: AppStyles.black_24,),
+                child: Text(
+                  "Let's start a conversation!", style: AppStyles.black_24,
+                ),
               ),
             ),
             BottomIcon(
